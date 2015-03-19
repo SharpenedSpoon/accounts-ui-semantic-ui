@@ -44,14 +44,14 @@ Template._loginButtonsLoggedInDropdown.helpers({
 
 Template._loginButtonsLoggedInDropdownActions.helpers({
 	allowChangingPassword: function () {
-// it would be more correct to check whether the user has a password set,
-// but in order to do that we'd have to send more data down to the client,
-// and it'd be preferable not to send down the entire service.password document.
-//
-// instead we use the heuristic: if the user has a username or email set.
-var user = Meteor.user();
-return user.username || (user.emails && user.emails[0] && user.emails[0].address);
-}
+		// it would be more correct to check whether the user has a password set,
+		// but in order to do that we'd have to send more data down to the client,
+		// and it'd be preferable not to send down the entire service.password document.
+		//
+		// instead we use the heuristic: if the user has a username or email set.
+		var user = Meteor.user();
+		return user.username || (user.emails && user.emails[0] && user.emails[0].address);
+	}
 });
 
 
@@ -66,126 +66,125 @@ Template._loginButtonsLoggedOutDropdown.events({
 
 	'keypress #forgot-password-email': function (event) {
 		if (event.keyCode === 13)
+			forgotPassword();
+	},
+
+	'click #login-buttons-forgot-password': function () {
 		forgotPassword();
-},
+	},
 
-'click #login-buttons-forgot-password': function () {
-	forgotPassword();
-},
+	'click #signup-link': function () {
+		loginButtonsSession.resetMessages();
 
-'click #signup-link': function () {
-	loginButtonsSession.resetMessages();
+		// store values of fields before swtiching to the signup form
+		var username = trimmedElementValueById('login-username');
+		var email = trimmedElementValueById('login-email');
+		var usernameOrEmail = trimmedElementValueById('login-username-or-email');
+		// notably not trimmed. a password could (?) start or end with a space
+		var password = elementValueById('login-password');
 
-// store values of fields before swtiching to the signup form
-var username = trimmedElementValueById('login-username');
-var email = trimmedElementValueById('login-email');
-var usernameOrEmail = trimmedElementValueById('login-username-or-email');
-// notably not trimmed. a password could (?) start or end with a space
-var password = elementValueById('login-password');
+		loginButtonsSession.set('inSignupFlow', true);
+		loginButtonsSession.set('inForgotPasswordFlow', false);
+		// force the ui to update so that we have the approprate fields to fill in
+		Tracker.flush();
 
-loginButtonsSession.set('inSignupFlow', true);
-loginButtonsSession.set('inForgotPasswordFlow', false);
-// force the ui to update so that we have the approprate fields to fill in
-Tracker.flush();
+		// update new fields with appropriate defaults
+		if (username !== null)
+			document.getElementById('login-username').value = username;
+		else if (email !== null)
+			document.getElementById('login-email').value = email;
+		else if (usernameOrEmail !== null)
+			if (usernameOrEmail.indexOf('@') === -1)
+				document.getElementById('login-username').value = usernameOrEmail;
+			else
+				document.getElementById('login-email').value = usernameOrEmail;
 
-// update new fields with appropriate defaults
-if (username !== null)
-document.getElementById('login-username').value = username;
-else if (email !== null)
-document.getElementById('login-email').value = email;
-else if (usernameOrEmail !== null)
-if (usernameOrEmail.indexOf('@') === -1)
-document.getElementById('login-username').value = usernameOrEmail;
-else
-document.getElementById('login-email').value = usernameOrEmail;
+		if (password !== null)
+			document.getElementById('login-password').value = password;
 
-if (password !== null)
-document.getElementById('login-password').value = password;
+		// Force redrawing the `login-dropdown-list` element because of
+		// a bizarre Chrome bug in which part of the DIV is not redrawn
+		// in case you had tried to unsuccessfully log in before
+		// switching to the signup form.
+		//
+		// Found tip on how to force a redraw on
+		// http://stackoverflow.com/questions/3485365/how-can-i-force-webkit-to-redraw-repaint-to-propagate-style-changes/3485654#3485654
+		var redraw = document.getElementById('login-dropdown-list');
+		redraw.style.display = 'none';
+		redraw.offsetHeight; // it seems that this line does nothing but is necessary for the redraw to work
+		redraw.style.display = 'block';
+	},
+	'click #forgot-password-link': function () {
+		loginButtonsSession.resetMessages();
 
-// Force redrawing the `login-dropdown-list` element because of
-// a bizarre Chrome bug in which part of the DIV is not redrawn
-// in case you had tried to unsuccessfully log in before
-// switching to the signup form.
-//
-// Found tip on how to force a redraw on
-// http://stackoverflow.com/questions/3485365/how-can-i-force-webkit-to-redraw-repaint-to-propagate-style-changes/3485654#3485654
-var redraw = document.getElementById('login-dropdown-list');
-redraw.style.display = 'none';
-redraw.offsetHeight; // it seems that this line does nothing but is necessary for the redraw to work
-redraw.style.display = 'block';
-},
-'click #forgot-password-link': function () {
-	loginButtonsSession.resetMessages();
+		// store values of fields before swtiching to the signup form
+		var email = trimmedElementValueById('login-email');
+		var usernameOrEmail = trimmedElementValueById('login-username-or-email');
 
-// store values of fields before swtiching to the signup form
-var email = trimmedElementValueById('login-email');
-var usernameOrEmail = trimmedElementValueById('login-username-or-email');
+		loginButtonsSession.set('inSignupFlow', false);
+		loginButtonsSession.set('inForgotPasswordFlow', true);
+		// force the ui to update so that we have the approprate fields to fill in
+		Tracker.flush();
 
-loginButtonsSession.set('inSignupFlow', false);
-loginButtonsSession.set('inForgotPasswordFlow', true);
-// force the ui to update so that we have the approprate fields to fill in
-Tracker.flush();
+		// update new fields with appropriate defaults
+		if (email !== null)
+			document.getElementById('forgot-password-email').value = email;
+		else if (usernameOrEmail !== null)
+			if (usernameOrEmail.indexOf('@') !== -1)
+				document.getElementById('forgot-password-email').value = usernameOrEmail;
 
-// update new fields with appropriate defaults
-if (email !== null)
-document.getElementById('forgot-password-email').value = email;
-else if (usernameOrEmail !== null)
-if (usernameOrEmail.indexOf('@') !== -1)
-document.getElementById('forgot-password-email').value = usernameOrEmail;
+	},
+	'click #back-to-login-link': function () {
+		loginButtonsSession.resetMessages();
 
-},
-'click #back-to-login-link': function () {
-	loginButtonsSession.resetMessages();
+		var username = trimmedElementValueById('login-username');
+		var email = trimmedElementValueById('login-email') || trimmedElementValueById('forgot-password-email'); // Ughh. Standardize on names?
+		// notably not trimmed. a password could (?) start or end with a space
+		var password = elementValueById('login-password');
 
-	var username = trimmedElementValueById('login-username');
-	var email = trimmedElementValueById('login-email')
-|| trimmedElementValueById('forgot-password-email'); // Ughh. Standardize on names?
-// notably not trimmed. a password could (?) start or end with a space
-var password = elementValueById('login-password');
+		loginButtonsSession.set('inSignupFlow', false);
+		loginButtonsSession.set('inForgotPasswordFlow', false);
+		// force the ui to update so that we have the approprate fields to fill in
+		Tracker.flush();
 
-loginButtonsSession.set('inSignupFlow', false);
-loginButtonsSession.set('inForgotPasswordFlow', false);
-// force the ui to update so that we have the approprate fields to fill in
-Tracker.flush();
+		if (document.getElementById('login-username'))
+			document.getElementById('login-username').value = username;
+		if (document.getElementById('login-email'))
+			document.getElementById('login-email').value = email;
 
-if (document.getElementById('login-username'))
-document.getElementById('login-username').value = username;
-if (document.getElementById('login-email'))
-document.getElementById('login-email').value = email;
+		if (document.getElementById('login-username-or-email'))
+			document.getElementById('login-username-or-email').value = email || username;
 
-if (document.getElementById('login-username-or-email'))
-document.getElementById('login-username-or-email').value = email || username;
-
-if (password !== null)
-document.getElementById('login-password').value = password;
-},
-'keypress #login-username, keypress #login-email, keypress #login-username-or-email, keypress #login-password, keypress #login-password-again': function (event) {
-	if (event.keyCode === 13)
-	loginOrSignup();
-}
+		if (password !== null)
+			document.getElementById('login-password').value = password;
+	},
+	'keypress #login-username, keypress #login-email, keypress #login-username-or-email, keypress #login-password, keypress #login-password-again': function (event) {
+		if (event.keyCode === 13)
+			loginOrSignup();
+	}
 });
 
 Template._loginButtonsLoggedOutDropdown.helpers({
-// additional classes that can be helpful in styling the dropdown
-additionalClasses: function () {
-	if (!hasPasswordService()) {
-		return false;
-	} else {
-		if (loginButtonsSession.get('inSignupFlow')) {
-			return 'login-form-create-account';
-		} else if (loginButtonsSession.get('inForgotPasswordFlow')) {
-			return 'login-form-forgot-password';
+	// additional classes that can be helpful in styling the dropdown
+	additionalClasses: function () {
+		if (!hasPasswordService()) {
+			return false;
 		} else {
-			return 'login-form-sign-in';
+			if (loginButtonsSession.get('inSignupFlow')) {
+				return 'login-form-create-account';
+			} else if (loginButtonsSession.get('inForgotPasswordFlow')) {
+				return 'login-form-forgot-password';
+			} else {
+				return 'login-form-sign-in';
+			}
 		}
-	}
-},
+	},
 
-dropdownVisible: function () {
-	return loginButtonsSession.get('dropdownVisible');
-},
+	dropdownVisible: function () {
+		return loginButtonsSession.get('dropdownVisible');
+	},
 
-hasPasswordService: hasPasswordService
+	hasPasswordService: hasPasswordService
 });
 
 // return all login services, with password last
@@ -250,39 +249,39 @@ Template._loginButtonsLoggedOutPasswordService.helpers({
 		{fieldName: 'password-again', fieldLabel: 'Password (again)',
 		inputType: 'password',
 		visible: function () {
-// No need to make users double-enter their password if
-// they'll necessarily have an email set, since they can use
-// the "forgot password" flow.
-return _.contains(
-["USERNAME_AND_OPTIONAL_EMAIL", "USERNAME_ONLY"],
-passwordSignupFields());
-}}
-];
-
-return loginButtonsSession.get('inSignupFlow') ? signupFields : loginFields;
-},
-
-inForgotPasswordFlow: function () {
-	return loginButtonsSession.get('inForgotPasswordFlow');
-},
-
-inLoginFlow: function () {
-	return !loginButtonsSession.get('inSignupFlow') && !loginButtonsSession.get('inForgotPasswordFlow');
-},
-
-inSignupFlow: function () {
-	return loginButtonsSession.get('inSignupFlow');
-},
-
-showCreateAccountLink: function () {
-	return !Accounts._options.forbidClientAccountCreation;
-},
-
-showForgotPasswordLink: function () {
+	// No need to make users double-enter their password if
+	// they'll necessarily have an email set, since they can use
+	// the "forgot password" flow.
 	return _.contains(
-	["USERNAME_AND_EMAIL", "USERNAME_AND_OPTIONAL_EMAIL", "EMAIL_ONLY"],
+	["USERNAME_AND_OPTIONAL_EMAIL", "USERNAME_ONLY"],
 	passwordSignupFields());
-}
+	}}
+	];
+
+	return loginButtonsSession.get('inSignupFlow') ? signupFields : loginFields;
+	},
+
+	inForgotPasswordFlow: function () {
+		return loginButtonsSession.get('inForgotPasswordFlow');
+	},
+
+	inLoginFlow: function () {
+		return !loginButtonsSession.get('inSignupFlow') && !loginButtonsSession.get('inForgotPasswordFlow');
+	},
+
+	inSignupFlow: function () {
+		return loginButtonsSession.get('inSignupFlow');
+	},
+
+	showCreateAccountLink: function () {
+		return !Accounts._options.forbidClientAccountCreation;
+	},
+
+	showForgotPasswordLink: function () {
+		return _.contains(
+		["USERNAME_AND_EMAIL", "USERNAME_AND_OPTIONAL_EMAIL", "EMAIL_ONLY"],
+		passwordSignupFields());
+	}
 });
 
 Template._loginButtonsFormField.helpers({
@@ -299,11 +298,11 @@ Template._loginButtonsFormField.helpers({
 Template._loginButtonsChangePassword.events({
 	'keypress #login-old-password, keypress #login-password, keypress #login-password-again': function (event) {
 		if (event.keyCode === 13)
+			changePassword();
+	},
+	'click #login-buttons-do-change-password': function () {
 		changePassword();
-},
-'click #login-buttons-do-change-password': function () {
-	changePassword();
-}
+	}
 });
 
 Template._loginButtonsChangePassword.helpers({

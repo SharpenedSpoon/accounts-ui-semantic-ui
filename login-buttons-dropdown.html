@@ -8,29 +8,29 @@
 		</a>
 
 		{{#if dropdownVisible}}
-		<div id="login-dropdown-list" class="accounts-dialog">
-			<a class="login-close-text">Close</a>
-			<div class="login-close-text-clear"></div>
+			<div id="login-dropdown-list" class="accounts-dialog">
+				<a class="login-close-text">Close</a>
+				<div class="login-close-text-clear"></div>
 
-			{{#if inMessageOnlyFlow}}
-			{{> _loginButtonsMessages}}
-			{{else}}
-			{{#if inChangePasswordFlow}}
-			{{> _loginButtonsChangePassword}}
-			{{else}}
-			{{> _loginButtonsLoggedInDropdownActions}}
-			{{/if}}
-			{{/if}}
-		</div>
+				{{#if inMessageOnlyFlow}}
+					{{> _loginButtonsMessages}}
+				{{else}}
+					{{#if inChangePasswordFlow}}
+						{{> _loginButtonsChangePassword}}
+					{{else}}
+						{{> _loginButtonsLoggedInDropdownActions}}
+					{{/if}}
+				{{/if}}
+			</div>
 		{{/if}}
 	</div>
 </template>
 
 <template name="_loginButtonsLoggedInDropdownActions">
 	{{#if allowChangingPassword}}
-	<div class="login-button" id="login-buttons-open-change-password">
-		Change password
-	</div>
+		<div class="login-button" id="login-buttons-open-change-password">
+			Change password
+		</div>
 	{{/if}}
 
 	<div class="login-button" id="login-buttons-logout">
@@ -46,42 +46,42 @@
 <template name="_loginButtonsLoggedOutDropdown">
 	<div class="login-link-and-dropdown-list {{additionalClasses}}">
 		{{#if dropdownVisible}}
-		{{! This text is covered by the dropdown, but duplicating it here
-		makes the position of "Close" match the position of this text. }}
-		<a class="login-link-text" id="login-sign-in-link">Sign in ▾</a>
-		<div id="login-dropdown-list" class="accounts-dialog">
-			<a class="login-close-text">Close</a>
+			{{! This text is covered by the dropdown, but duplicating it here
+			makes the position of "Close" match the position of this text. }}
+			<a class="login-link-text" id="login-sign-in-link">Sign in ▾</a>
+			<div id="login-dropdown-list" class="accounts-dialog">
+				<a class="login-close-text">Close</a>
+				{{#if loggingIn}}
+					{{> _loginButtonsLoggingIn}}
+				{{/if}}
+				<div class="login-close-text-clear"></div>
+				{{> _loginButtonsLoggedOutAllServices}}
+			</div>
+		{{else}}
 			{{#if loggingIn}}
-			{{> _loginButtonsLoggingIn}}
+				{{! Not normally visible, but if the user closes the dropdown during login.}}
+				{{> _loginButtonsLoggingIn}}
+			{{else}}
+				<a class="login-link-text" id="login-sign-in-link">Sign in ▾</a>
 			{{/if}}
-			<div class="login-close-text-clear"></div>
-			{{> _loginButtonsLoggedOutAllServices}}
-		</div>
-		{{else}}
-		{{#if loggingIn}}
-		{{! Not normally visible, but if the user closes the dropdown during login.}}
-		{{> _loginButtonsLoggingIn}}
-		{{else}}
-		<a class="login-link-text" id="login-sign-in-link">Sign in ▾</a>
-		{{/if}}
 		{{/if}}
 	</div>
 </template>
 
 <template name="_loginButtonsLoggedOutAllServices">
 	{{#each services}}
-	{{#if isPasswordService}}
-	{{#if hasOtherServices}} {{! the password service will always come last }}
-	{{> _loginButtonsLoggedOutPasswordServiceSeparator}}
-	{{/if}}
-	{{> _loginButtonsLoggedOutPasswordService}}
-	{{else}}
-	{{> _loginButtonsLoggedOutSingleLoginButton}}
-	{{/if}}
+		{{#if isPasswordService}}
+			{{#if hasOtherServices}} {{! the password service will always come last }}
+				{{> _loginButtonsLoggedOutPasswordServiceSeparator}}
+			{{/if}}
+			{{> _loginButtonsLoggedOutPasswordService}}
+		{{else}}
+			{{> _loginButtonsLoggedOutSingleLoginButton}}
+		{{/if}}
 	{{/each}}
 
 	{{#unless hasPasswordService}}
-	{{> _loginButtonsMessages}}
+		{{> _loginButtonsMessages}}
 	{{/unless}}
 </template>
 
@@ -95,41 +95,41 @@
 
 <template name="_loginButtonsLoggedOutPasswordService">
 	{{#if inForgotPasswordFlow}}
-	{{> _forgotPasswordForm}}
+		{{> _forgotPasswordForm}}
 	{{else}}
-	<div class="login-form login-password-form">
-		{{#each fields}}
-		{{> _loginButtonsFormField}}
-		{{/each}}
+		<div class="login-form login-password-form">
+			{{#each fields}}
+				{{> _loginButtonsFormField}}
+			{{/each}}
 
-		{{> _loginButtonsMessages}}
+			{{> _loginButtonsMessages}}
 
-		<div class="login-button login-button-form-submit" id="login-buttons-password">
+			<div class="login-button login-button-form-submit" id="login-buttons-password">
+				{{#if inSignupFlow}}
+					Create account
+				{{else}}
+					Sign in
+				{{/if}}
+			</div>
+
+			{{#if inLoginFlow}}
+				{{#if showCreateAccountLink}}
+					<div class="additional-link-container">
+						<a id="signup-link" class="additional-link">Create account</a>
+					</div>
+				{{/if}}
+
+				{{#if showForgotPasswordLink}}
+					<div class="additional-link-container">
+						<a id="forgot-password-link" class="additional-link">Forgot password</a>
+					</div>
+				{{/if}}
+			{{/if}}
+
 			{{#if inSignupFlow}}
-			Create account
-			{{else}}
-			Sign in
+				{{> _loginButtonsBackToLoginLink}}
 			{{/if}}
 		</div>
-
-		{{#if inLoginFlow}}
-		{{#if showCreateAccountLink}}
-		<div class="additional-link-container">
-			<a id="signup-link" class="additional-link">Create account</a>
-		</div>
-		{{/if}}
-
-		{{#if showForgotPasswordLink}}
-		<div class="additional-link-container">
-			<a id="forgot-password-link" class="additional-link">Forgot password</a>
-		</div>
-		{{/if}}
-		{{/if}}
-
-		{{#if inSignupFlow}}
-		{{> _loginButtonsBackToLoginLink}}
-		{{/if}}
-	</div>
 	{{/if}}
 </template>
 
@@ -178,18 +178,18 @@ https://gist.github.com/968927
 
 <template name="_loginButtonsFormField">
 	{{#if visible}}
-	<div id="login-{{fieldName}}-label-and-input">
-		<label id="login-{{fieldName}}-label" for="login-{{fieldName}}">
-			{{fieldLabel}}
-		</label>
-		<input id="login-{{fieldName}}" type="{{inputType}}" />
-	</div>
+		<div id="login-{{fieldName}}-label-and-input">
+			<label id="login-{{fieldName}}-label" for="login-{{fieldName}}">
+				{{fieldLabel}}
+			</label>
+			<input id="login-{{fieldName}}" type="{{inputType}}" />
+		</div>
 	{{/if}}
 </template>
 
 <template name="_loginButtonsChangePassword">
 	{{#each fields}}
-	{{> _loginButtonsFormField}}
+		{{> _loginButtonsFormField}}
 	{{/each}}
 
 	{{> _loginButtonsMessages}}
