@@ -2,38 +2,30 @@
 <!-- LOGGED IN -->
 <!--           -->
 <template name="_loginButtonsLoggedInDropdown">
-	<div class="login-link-and-dropdown-list">
-		<a class="login-link-text" id="login-name-link">
-			{{displayName}} ▾
-		</a>
-
-		{{#if dropdownVisible}}
-			<div id="login-dropdown-list" class="accounts-dialog">
-				<a class="login-close-text">Close</a>
-				<div class="login-close-text-clear"></div>
-
-				{{#if inMessageOnlyFlow}}
-					{{> _loginButtonsMessages}}
+	<a class="ui simple dropdown item">
+		<i class="dropdown icon"></i>{{displayName}}
+		<div class="menu">
+			{{#if inMessageOnlyFlow}}
+				{{> _loginButtonsMessages}}
+			{{else}}
+				{{#if inChangePasswordFlow}}
+					{{> _loginButtonsChangePassword}}
 				{{else}}
-					{{#if inChangePasswordFlow}}
-						{{> _loginButtonsChangePassword}}
-					{{else}}
-						{{> _loginButtonsLoggedInDropdownActions}}
-					{{/if}}
+					{{> _loginButtonsLoggedInDropdownActions}}
 				{{/if}}
-			</div>
-		{{/if}}
-	</div>
+			{{/if}}
+		</div>
+	</a>
 </template>
 
 <template name="_loginButtonsLoggedInDropdownActions">
 	{{#if allowChangingPassword}}
-		<div class="login-button" id="login-buttons-open-change-password">
+		<div class="item" id="login-buttons-open-change-password">
 			Change password
 		</div>
 	{{/if}}
 
-	<div class="login-button" id="login-buttons-logout">
+	<div class="item" id="login-buttons-logout">
 		Sign out
 	</div>
 
@@ -44,28 +36,15 @@
 <!-- LOGGED OUT -->
 <!--            -->
 <template name="_loginButtonsLoggedOutDropdown">
-	<div class="login-link-and-dropdown-list {{additionalClasses}}">
-		{{#if dropdownVisible}}
-			{{! This text is covered by the dropdown, but duplicating it here
-			makes the position of "Close" match the position of this text. }}
-			<a class="login-link-text" id="login-sign-in-link">Sign in ▾</a>
-			<div id="login-dropdown-list" class="accounts-dialog">
-				<a class="login-close-text">Close</a>
-				{{#if loggingIn}}
-					{{> _loginButtonsLoggingIn}}
-				{{/if}}
-				<div class="login-close-text-clear"></div>
-				{{> _loginButtonsLoggedOutAllServices}}
-			</div>
-		{{else}}
+	<a class="ui simple dropdown item">
+		<i class="dropdown icon"></i>Sign in
+		<div class="menu">
 			{{#if loggingIn}}
-				{{! Not normally visible, but if the user closes the dropdown during login.}}
 				{{> _loginButtonsLoggingIn}}
-			{{else}}
-				<a class="login-link-text" id="login-sign-in-link">Sign in ▾</a>
 			{{/if}}
-		{{/if}}
-	</div>
+			{{> _loginButtonsLoggedOutAllServices}}
+		</div>
+	</a>
 </template>
 
 <template name="_loginButtonsLoggedOutAllServices">
