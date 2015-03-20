@@ -37,73 +37,73 @@ Accounts._loginButtonsSession = {
 	set: function(key, value) {
 		validateKey(key);
 		if (_.contains(['errorMessage', 'infoMessage'], key))
-		throw new Error("Don't set errorMessage or infoMessage directly. Instead, use errorMessage() or infoMessage().");
+			throw new Error("Don't set errorMessage or infoMessage directly. Instead, use errorMessage() or infoMessage().");
 
-	this._set(key, value);
-},
+		this._set(key, value);
+	},
 
-_set: function(key, value) {
-	Session.set(KEY_PREFIX + key, value);
-},
+	_set: function(key, value) {
+		Session.set(KEY_PREFIX + key, value);
+	},
 
-get: function(key) {
-	validateKey(key);
-	return Session.get(KEY_PREFIX + key);
-},
+	get: function(key) {
+		validateKey(key);
+		return Session.get(KEY_PREFIX + key);
+	},
 
-closeDropdown: function () {
-	this.set('inSignupFlow', false);
-	this.set('inForgotPasswordFlow', false);
-	this.set('inChangePasswordFlow', false);
-	this.set('inMessageOnlyFlow', false);
-	this.set('dropdownVisible', false);
-	this.resetMessages();
-},
+	closeDropdown: function () {
+		this.set('inSignupFlow', false);
+		this.set('inForgotPasswordFlow', false);
+		this.set('inChangePasswordFlow', false);
+		this.set('inMessageOnlyFlow', false);
+		this.set('dropdownVisible', false);
+		this.resetMessages();
+	},
 
-infoMessage: function(message) {
-	this._set("errorMessage", null);
-	this._set("infoMessage", message);
-	this.ensureMessageVisible();
-},
+	infoMessage: function(message) {
+		this._set("errorMessage", null);
+		this._set("infoMessage", message);
+		this.ensureMessageVisible();
+	},
 
-errorMessage: function(message) {
-	this._set("errorMessage", message);
-	this._set("infoMessage", null);
-	this.ensureMessageVisible();
-},
+	errorMessage: function(message) {
+		this._set("errorMessage", message);
+		this._set("infoMessage", null);
+		this.ensureMessageVisible();
+	},
 
-// is there a visible dialog that shows messages (info and error)
-isMessageDialogVisible: function () {
-	return this.get('resetPasswordToken') ||
-	this.get('enrollAccountToken') ||
-	this.get('justVerifiedEmail');
-},
+	// is there a visible dialog that shows messages (info and error)
+	isMessageDialogVisible: function () {
+		return this.get('resetPasswordToken') ||
+		this.get('enrollAccountToken') ||
+		this.get('justVerifiedEmail');
+	},
 
-// ensure that somethings displaying a message (info or error) is
-// visible.  if a dialog with messages is open, do nothing;
-// otherwise open the dropdown.
-//
-// notably this doesn't matter when only displaying a single login
-// button since then we have an explicit message dialog
-// (_loginButtonsMessageDialog), and dropdownVisible is ignored in
-// this case.
-ensureMessageVisible: function () {
-	if (!this.isMessageDialogVisible())
-	this.set("dropdownVisible", true);
-},
+	// ensure that somethings displaying a message (info or error) is
+	// visible.  if a dialog with messages is open, do nothing;
+	// otherwise open the dropdown.
+	//
+	// notably this doesn't matter when only displaying a single login
+	// button since then we have an explicit message dialog
+	// (_loginButtonsMessageDialog), and dropdownVisible is ignored in
+	// this case.
+	ensureMessageVisible: function () {
+		if (!this.isMessageDialogVisible())
+		this.set("dropdownVisible", true);
+	},
 
-resetMessages: function () {
-	this._set("errorMessage", null);
-	this._set("infoMessage", null);
-},
+	resetMessages: function () {
+		this._set("errorMessage", null);
+		this._set("infoMessage", null);
+	},
 
-configureService: function (name) {
-	if (Meteor.isCordova) {
-		this.set('configureOnDesktopVisible', true);
-	} else {
-		this.set('configureLoginServiceDialogVisible', true);
-		this.set('configureLoginServiceDialogServiceName', name);
-		this.set('configureLoginServiceDialogSaveDisabled', true);
+	configureService: function (name) {
+		if (Meteor.isCordova) {
+			this.set('configureOnDesktopVisible', true);
+		} else {
+			this.set('configureLoginServiceDialogVisible', true);
+			this.set('configureLoginServiceDialogServiceName', name);
+			this.set('configureLoginServiceDialogSaveDisabled', true);
+		}
 	}
-}
 };

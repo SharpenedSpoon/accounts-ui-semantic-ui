@@ -1,6 +1,6 @@
 <template name="_loginButtonsLoggedOutSingleLoginButton">
 	<div class="ui fluid input">
-		<div class="ui labeled icon fluid button {{#unless configured}}configure-button{{/unless}} {{#if configured}}primary{{/if}}" id="login-buttons-{{name}}">
+		<div class="ui labeled icon fluid button login-button {{#unless configured}}configure-button{{/unless}} {{#if configured}}primary{{/if}}" id="login-buttons-{{name}}">
 			<div class="ui icon" id="login-buttons-image-{{name}}" style="background-repeat: no-repeat; background-position: 50% 50%;"></div>
 			{{#if configured}}
 				<span class="text-besides-image sign-in-text-{{name}}">Sign in with {{capitalizedName}}</span>

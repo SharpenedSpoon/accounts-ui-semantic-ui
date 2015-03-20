@@ -126,45 +126,34 @@
 					Now, copy over some details.
 				</p>
 
-				<p>
-					<table>
-						<colgroup>
-							<col span="1" class="configuration_labels">
-							<col span="1" class="configuration_inputs">
-						</colgroup>
-						{{#each configurationFields}}
-							<tr>
-								<td>
-									<label for="configure-login-service-dialog-{{property}}">{{label}}</label>
-								</td>
-								<td>
-									<input id="configure-login-service-dialog-{{property}}" type="text" />
-								</td>
-							</tr>
-						{{/each}}
-					</table>
-				</p>
-				<p class="new-section">
-					Choose the login style:
-				</p>
-				<p>
-					&emsp;<input id="configure-login-service-dialog-popupBasedLogin" type="radio" checked="checked" name="loginStyle" value="popup">
-					<label for="configure-login-service-dialog-popupBasedLogin">Popup-based login (recommended for most applications)</label>
-
-					<br>&emsp;<input id="configure-login-service-dialog-redirectBasedLogin" type="radio" name="loginStyle" value="redirect">
-					<label for="configure-login-service-dialog-redirectBasedLogin">
-						Redirect-based login (special cases explained
-						<a href="https://github.com/meteor/meteor/wiki/OAuth-for-mobile-Meteor-clients#popup-versus-redirect-flow" target="_blank">here</a>)
-					</label>
-				</p>
-				<div class="new-section">
-					<div class="login-button configure-login-service-dismiss-button">
-						I'll do this later
+				<div class="ui form">
+					{{#each configurationFields}}
+						<div class="field">
+							<label for="configure-login-service-dialog-{{property}}">{{label}}</label>
+							<input id="configure-login-service-dialog-{{property}}" type="text" />
+						</div>
+					{{/each}}
+				
+					<div class="grouped fields">
+						<label for="loginStyle">Choose the login style:</label>
+						<div class="field">
+							<div class="ui radio checkbox">
+								<input id="configure-login-service-dialog-popupBasedLogin" type="radio" checked="checked" name="loginStyle" value="popup">
+								<label for="configure-login-service-dialog-popupBasedLogin">Popup-based login (recommended for most applications)</label>
+							</div>
+						</div>
+						<div class="field">
+							<div class="ui radio checkbox">
+								<input id="configure-login-service-dialog-redirectBasedLogin" type="radio" name="loginStyle" value="redirect">
+								<label for="configure-login-service-dialog-redirectBasedLogin">Redirect-based login (special cases explained <a href="https://github.com/meteor/meteor/wiki/OAuth-for-mobile-Meteor-clients#popup-versus-redirect-flow" target="_blank">here</a>)</label>
+							</div>
+						</div>
 					</div>
-					<a class="accounts-close configure-login-service-dismiss-button">&times;</a>
 
-					<div class="login-button login-button-configure {{#if saveDisabled}}login-button-disabled{{/if}}" id="configure-login-service-dialog-save-configuration">
-						Save Configuration
+					<div class="ui buttons">
+						<div class="ui primary button {{#if saveDisabled}}disabled{{/if}}" id="configure-login-service-dialog-save-configuration">Save Configuration</div>
+						<div class="or"></div>
+						<div class="ui button configure-login-service-dismiss-button">I'll do this later</div>
 					</div>
 				</div>
 			</div>
