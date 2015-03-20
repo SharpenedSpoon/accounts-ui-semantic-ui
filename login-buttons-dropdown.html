@@ -2,7 +2,7 @@
 <!-- LOGGED IN -->
 <!--           -->
 <template name="_loginButtonsLoggedInDropdown">
-	<a class="ui simple active dropdown item">
+	<a class="ui dropdown item">
 		<i class="dropdown icon"></i>{{displayName}}
 		<div class="menu" id="login-dropdown-list">
 			{{#if inMessageOnlyFlow}}
@@ -36,7 +36,7 @@
 <!-- LOGGED OUT -->
 <!--            -->
 <template name="_loginButtonsLoggedOutDropdown">
-	<a class="ui simple active dropdown item">
+	<a class="ui dropdown item">
 		<i class="dropdown icon"></i>Sign in
 		<div class="menu" id="login-dropdown-list">
 			{{#if loggingIn}}

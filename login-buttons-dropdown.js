@@ -1,6 +1,14 @@
 // for convenience
 var loginButtonsSession = Accounts._loginButtonsSession;
 
+// Activate semantic ui dropdowns
+Template._loginButtonsLoggedInDropdown.rendered = function() {
+	this.$('.dropdown').dropdown();
+}
+Template._loginButtonsLoggedOutDropdown.rendered = function() {
+	this.$('.dropdown').dropdown();
+}
+
 // events shared between loginButtonsLoggedOutDropdown and
 // loginButtonsLoggedInDropdown
 Template.loginButtons.events({
