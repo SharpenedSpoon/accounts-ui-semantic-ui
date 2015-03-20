@@ -148,7 +148,6 @@ Template._loginButtonsLoggedInSingleLogoutButton.helpers({
 //
 // loginButtonsMessage template
 //
-
 Template._loginButtonsMessages.helpers({
 	errorMessage: function () {
 		return loginButtonsSession.get('errorMessage');

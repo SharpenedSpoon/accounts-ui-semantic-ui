@@ -6,9 +6,9 @@
 				{{#if dropdown}}
 					{{> _loginButtonsLoggingIn }}
 				{{else}}
-					<div class="login-buttons-with-only-one-button">
+					<!-- <div class="login-buttons-with-only-one-button"> -->
 						{{> _loginButtonsLoggingInSingleLoginButton }}
-					</div>
+					<!-- </div> -->
 				{{/if}}
 			{{else}}
 				{{> _loginButtonsLoggedIn}}
@@ -23,9 +23,9 @@
 	{{#if dropdown}}
 		{{> _loginButtonsLoggedInDropdown}}
 	{{else}}
-		<div class="login-buttons-with-only-one-button">
+		<!-- <div class="login-buttons-with-only-one-button"> -->
 			{{> _loginButtonsLoggedInSingleLogoutButton}}
-		</div>
+		<!-- </div> -->
 	{{/if}}
 </template>
 
@@ -36,35 +36,39 @@
 				{{> _loginButtonsLoggedOutDropdown}}
 			{{else}}
 				{{#with singleService}} {{! at this point there must be only one configured services }}
-					<div class="login-buttons-with-only-one-button">
+					<!-- <div class="login-buttons-with-only-one-button"> -->
 						{{#if loggingIn}}
 							{{> _loginButtonsLoggingInSingleLoginButton}}
 						{{else}}
 							{{> _loginButtonsLoggedOutSingleLoginButton}}
 						{{/if}}
-					</div>
+					<!-- </div> -->
 				{{/with}}
 			{{/if}}
 		{{/if}}
 	{{else}}
-		<div class="no-services">No login services configured</div>
+		<div class="ui red text item">No login services configured</div>
 	{{/if}}
 </template>
 
 <!-- used in various places to display messages to user -->
+<template name="_loginButtonsMessagesMenuItem">
+	<div class="ui fluid input">
+		{{> _loginButtonsMessagesMenuItem}}
+	</div>
+</template>
+
 <template name="_loginButtonsMessages">
 	{{#if errorMessage}}
-		<div class="message error-message">{{errorMessage}}</div>
+		<div class="ui visible error message">{{errorMessage}}</div>
 	{{/if}}
 	{{#if infoMessage}}
-		<div class="message info-message">{{infoMessage}}</div>
+		<div class="ui visible info message">{{infoMessage}}</div>
 	{{/if}}
 </template>
 
 <template name="_loginButtonsLoggingIn">
-	<!-- {{> _loginButtonsLoggingInPadding}} -->
-	<div class="loading">&nbsp;</div>
-	<!-- {{> _loginButtonsLoggingInPadding}} -->
+	<div class="ui active loader">&nbsp;</div>
 </template>
 
 <template name="_loginButtonsLoggingInPadding">

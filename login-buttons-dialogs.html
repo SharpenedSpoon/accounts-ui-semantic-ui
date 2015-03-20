@@ -1,152 +1,211 @@
 <body>
-	{{> _resetPasswordDialog}}
-	{{> _justResetPasswordDialog}}
-	{{> _enrollAccountDialog}}
-	{{> _justVerifiedEmailDialog}}
-	{{> _configureLoginServiceDialog}}
-	{{> _configureLoginOnDesktopDialog}}
+	<div class="ui dimmer modals page transition hidden" style="display: none;">
+		{{> _resetPasswordDialog}}
+		{{> _justResetPasswordDialog}}
+		{{> _enrollAccountDialog}}
+		{{> _justVerifiedEmailDialog}}
+		{{> _configureLoginServiceDialog}}
+		{{> _configureLoginOnDesktopDialog}}
 
-	{{! if we're not showing a dropdown, we need some other place to show messages }}
-	{{> _loginButtonsMessagesDialog}}
+		{{! if we're not showing a dropdown, we need some other place to show messages }}
+		{{> _loginButtonsMessagesDialog}}
+	</div>
 </body>
 
 <template name="_resetPasswordDialog">
 	{{#if inResetPasswordFlow}}
-		<div class="hide-background"></div>
-
-		<div class="accounts-dialog accounts-centered-dialog">
-			<label id="reset-password-new-password-label" for="reset-password-new-password">
-				New password
-			</label>
-
-			<div class="reset-password-new-password-wrapper">
-				<input id="reset-password-new-password" type="password" />
+		<div class="ui small modal" id="reset-password-dialog">
+			<i class="close icon" id="login-buttons-cancel-reset-password"></i>
+			<div class="header">
+				Reset Your Password
 			</div>
+			<div class="content centered">
+				<div class="ui form">
+					<div class="field">
+						<label id="reset-password-new-password-label" for="reset-password-new-password">
+							New password
+							<input id="reset-password-new-password" type="password" />
+						</label>
+					</div>
 
-			{{> _loginButtonsMessages}}
+					{{> _loginButtonsMessages}}
 
-			<div class="login-button login-button-form-submit" id="login-buttons-reset-password-button">
-				Set password
+					<div class="ui button primary" id="login-buttons-reset-password-button">
+						Set password
+					</div>
+				</div>
 			</div>
-
-			<a class="accounts-close" id="login-buttons-cancel-reset-password">&times;</a>
 		</div>
+		<script>
+			$('#reset-password-dialog').modal({detachable: false, closable: false});
+			$('#reset-password-dialog').modal('show');
+		</script>
 	{{/if}}
 </template>
 
 <template name="_justResetPasswordDialog">
 	{{#if visible}}
-		<div class="accounts-dialog accounts-centered-dialog">
-			Password reset.
-			You are now logged in as {{displayName}}.
-			<div class="login-button" id="just-verified-dismiss-button">Dismiss</div>
+		<div class="ui small modal" id="just-reset-password-dialog">
+			<i class="close icon" id="just-verified-dismiss-button"></i>
+			<div class="header">
+				Password reset
+			</div>
+			<div class="content centered">
+				<p>You are now logged in as {{displayName}}.</p>
+				<div class="ui button" id="just-verified-dismiss-button">Dismiss</div>
+			</div>
 		</div>
+		<script>
+			$('#just-reset-password-dialog').modal({detachable: false, closable: false});
+			$('#just-reset-password-dialog').modal('show');
+		</script>
 	{{/if}}
 </template>
 
 <template name="_enrollAccountDialog">
 	{{#if inEnrollAccountFlow}}
-		<div class="hide-background"></div>
-
-		<div class="accounts-dialog accounts-centered-dialog">
-			<label id="enroll-account-password-label" for="enroll-account-password">
-				Choose a password
-			</label>
-
-			<div class="enroll-account-password-wrapper">
-				<input id="enroll-account-password" type="password" />
+		<div class="ui small modal" id="enroll-account-dialog">
+			<i class="close icon" id="login-buttons-cancel-enroll-account"></i>
+			<div class="header">
+				Creating account
 			</div>
+			<div class="content centered">
+				<div class="ui form">
+					<div class="field">
+						<label id="enroll-account-password-label" for="enroll-account-password">
+							Choose a password
+						</label>
+						<input id="enroll-account-password" type="password" />
+					</div>
 
-			{{> _loginButtonsMessages}}
+					{{> _loginButtonsMessages}}
 
-			<div class="login-button login-button-form-submit" id="login-buttons-enroll-account-button">
-				Create account
+					<div class="ui primary button" id="login-buttons-enroll-account-button">
+						Create account
+					</div>
+				</div>
 			</div>
-
-			<a class="accounts-close" id="login-buttons-cancel-enroll-account">&times;</a>
 		</div>
+		<script>
+			$('#enroll-account-dialog').modal({detachable: false, closable: false});
+			$('#enroll-account-dialog').modal('show');
+		</script>
 	{{/if}}
 </template>
 
 <template name="_justVerifiedEmailDialog">
 	{{#if visible}}
-		<div class="accounts-dialog accounts-centered-dialog">
-			Email verified.
-			You are now logged in as {{displayName}}.
-			<div class="login-button" id="just-verified-dismiss-button">Dismiss</div>
+		<div class="ui small modal" id="just-verified-email-dialog">
+			<i class="close icon" id="just-verified-dismiss-button"></i>
+			<div class="header">
+				Email verified.
+			</div>
+			<div class="content centered">
+				<p>You are now logged in as {{displayName}}.</p>
+				<div class="ui button" id="just-verified-dismiss-button">Dismiss</div>
+			</div>
 		</div>
+		<script>
+			$('#just-verified-email-dialog').modal({detachable: false, closable: false});
+			$('#just-verified-email-dialog').modal('show');
+		</script>
 	{{/if}}
 </template>
 
 <template name="_configureLoginServiceDialog">
 	{{#if visible}}
-		<div id="configure-login-service-dialog" class="accounts-dialog accounts-centered-dialog">
-			{{> configurationSteps}}
+		<div class="ui small modal" id="configure-login-service-dialog">
+			<i class="close icon configure-login-service-dismiss-button"></i>
+			<div class="header">
+				Configure Login Service
+			</div>
+			<div class="content centered">
+				{{> configurationSteps}}
 
-			<p>
-				Now, copy over some details.
-			</p>
-			<p>
-				<table>
-					<colgroup>
-						<col span="1" class="configuration_labels">
-						<col span="1" class="configuration_inputs">
-					</colgroup>
-					{{#each configurationFields}}
-						<tr>
-							<td>
-								<label for="configure-login-service-dialog-{{property}}">{{label}}</label>
-							</td>
-							<td>
-								<input id="configure-login-service-dialog-{{property}}" type="text" />
-							</td>
-						</tr>
-					{{/each}}
-				</table>
-			</p>
-			<p class="new-section">
-				Choose the login style:
-			</p>
-			<p>
-				&emsp;<input id="configure-login-service-dialog-popupBasedLogin" type="radio" checked="checked" name="loginStyle" value="popup">
-				<label for="configure-login-service-dialog-popupBasedLogin">Popup-based login (recommended for most applications)</label>
+				<p>
+					Now, copy over some details.
+				</p>
 
-				<br>&emsp;<input id="configure-login-service-dialog-redirectBasedLogin" type="radio" name="loginStyle" value="redirect">
-				<label for="configure-login-service-dialog-redirectBasedLogin">
-					Redirect-based login (special cases explained
-					<a href="https://github.com/meteor/meteor/wiki/OAuth-for-mobile-Meteor-clients#popup-versus-redirect-flow" target="_blank">here</a>)
-				</label>
-			</p>
-			<div class="new-section">
-				<div class="login-button configure-login-service-dismiss-button">
-					I'll do this later
-				</div>
-				<a class="accounts-close configure-login-service-dismiss-button">&times;</a>
+				<p>
+					<table>
+						<colgroup>
+							<col span="1" class="configuration_labels">
+							<col span="1" class="configuration_inputs">
+						</colgroup>
+						{{#each configurationFields}}
+							<tr>
+								<td>
+									<label for="configure-login-service-dialog-{{property}}">{{label}}</label>
+								</td>
+								<td>
+									<input id="configure-login-service-dialog-{{property}}" type="text" />
+								</td>
+							</tr>
+						{{/each}}
+					</table>
+				</p>
+				<p class="new-section">
+					Choose the login style:
+				</p>
+				<p>
+					&emsp;<input id="configure-login-service-dialog-popupBasedLogin" type="radio" checked="checked" name="loginStyle" value="popup">
+					<label for="configure-login-service-dialog-popupBasedLogin">Popup-based login (recommended for most applications)</label>
 
-				<div class="login-button login-button-configure {{#if saveDisabled}}login-button-disabled{{/if}}" id="configure-login-service-dialog-save-configuration">
-					Save Configuration
+					<br>&emsp;<input id="configure-login-service-dialog-redirectBasedLogin" type="radio" name="loginStyle" value="redirect">
+					<label for="configure-login-service-dialog-redirectBasedLogin">
+						Redirect-based login (special cases explained
+						<a href="https://github.com/meteor/meteor/wiki/OAuth-for-mobile-Meteor-clients#popup-versus-redirect-flow" target="_blank">here</a>)
+					</label>
+				</p>
+				<div class="new-section">
+					<div class="login-button configure-login-service-dismiss-button">
+						I'll do this later
+					</div>
+					<a class="accounts-close configure-login-service-dismiss-button">&times;</a>
+
+					<div class="login-button login-button-configure {{#if saveDisabled}}login-button-disabled{{/if}}" id="configure-login-service-dialog-save-configuration">
+						Save Configuration
+					</div>
 				</div>
 			</div>
 		</div>
+		<script>
+			$('#configure-login-service-dialog').modal({detachable: false, closable: false});
+			$('#configure-login-service-dialog').modal('show');
+		</script>
 	{{/if}}
 </template>
 
 <template name="_loginButtonsMessagesDialog">
 	{{#if visible}}
-		<div class="accounts-dialog accounts-centered-dialog" id="login-buttons-message-dialog">
-			{{> _loginButtonsMessages}}
-			<div class="login-button" id="messages-dialog-dismiss-button">Dismiss</div>
+		<div class="ui active small modal" id="login-buttons-message-dialog">
+			<i class="close icon" id="messages-dialog-dismiss-button"></i>
+			<div class="content centered">
+				{{> _loginButtonsMessages}}
+				<div class="ui primary button" id="messages-dialog-dismiss-button">Dismiss</div>
+			</div>
 		</div>
+		<script>
+			$('#login-buttons-message-dialog').modal({detachable: false, closable: false});
+			$('#login-buttons-message-dialog').modal('show');
+		</script>
 	{{/if}}
 </template>
 
 <template name="_configureLoginOnDesktopDialog">
 	{{#if visible}}
-		<div class="accounts-dialog accounts-centered-dialog" id="configure-on-desktop-dialog">
-			<p>
+		<div class="ui active small modal" id="configure-on-desktop-dialog">
+			<i class="close icon" id="configure-on-desktop-dismiss-button"></i>
+			<div class="header">
 				Please configure login on a desktop browser.
-			</p>
-			<div class="login-button" id="configure-on-desktop-dismiss-button">Dismiss</div>
+			</div>
+			<div class="content centered">
+				<div class="ui primary button" id="configure-on-desktop-dismiss-button">Dismiss</div>
+			</div>
 		</div>
+		<script>
+			$('#configure-on-desktop-dialog').modal({detachable: false, closable: false});
+			$('#configure-on-desktop-dialog').modal('show');
+		</script>
 	{{/if}}
 </template>

@@ -6,7 +6,7 @@
 		<i class="dropdown icon"></i>{{displayName}}
 		<div class="menu">
 			{{#if inMessageOnlyFlow}}
-				{{> _loginButtonsMessages}}
+				{{> _loginButtonsMessagesMenuItem}}
 			{{else}}
 				{{#if inChangePasswordFlow}}
 					{{> _loginButtonsChangePassword}}
@@ -29,7 +29,7 @@
 		Sign out
 	</div>
 
-	{{> _loginButtonsMessages}}
+	{{> _loginButtonsMessagesMenuItem}}
 </template>
 
 <!--            -->
@@ -60,7 +60,7 @@
 	{{/each}}
 
 	{{#unless hasPasswordService}}
-		{{> _loginButtonsMessages}}
+		{{> _loginButtonsMessagesMenuItem}}
 	{{/unless}}
 </template>
 
@@ -78,7 +78,7 @@
 			{{> _loginButtonsFormField}}
 		{{/each}}
 
-		{{> _loginButtonsMessages}}
+		{{> _loginButtonsMessagesMenuItem}}
 
 		<div class="ui fluid input">
 			<a class="ui primary button" id="login-buttons-password">
@@ -107,26 +107,24 @@
 </template>
 
 <template name="_forgotPasswordForm">
-	<div class="login-form">
-		<div id="forgot-password-email-label-and-input"> {{! XXX we should probably use loginButtonsFormField }}
+	<div class="ui form fluid input">
+		<div class="field" id="forgot-password-email-label-and-input">
 			<label id="forgot-password-email-label" for="forgot-password-email">Email</label>
 			<input id="forgot-password-email" type="email"/>
 		</div>
 
 		{{> _loginButtonsMessages}}
 
-		<div class="login-button login-button-form-submit" id="login-buttons-forgot-password">
+		<div class="ui primary button" id="login-buttons-forgot-password">
 			Reset password
 		</div>
-
-		{{> _loginButtonsBackToLoginLink}}
 	</div>
+
+	{{> _loginButtonsBackToLoginLink}}
 </template>
 
 <template name="_loginButtonsBackToLoginLink">
-	<div class="additional-link-container">
-		<a id="back-to-login-link" class="additional-link">Sign in</a>
-	</div>
+	<a id="back-to-login-link" class="ui item">Sign in</a>
 </template>
 
 
@@ -167,9 +165,11 @@ https://gist.github.com/968927
 		{{> _loginButtonsFormField}}
 	{{/each}}
 
-	{{> _loginButtonsMessages}}
+	{{> _loginButtonsMessagesMenuItem}}
 
-	<div class="button" id="login-buttons-do-change-password">
-		Change password
+	<div class="ui fluid input">
+		<div class="ui primary button" id="login-buttons-do-change-password">
+			Change password
+		</div>
 	</div>
 </template>
