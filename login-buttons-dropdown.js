@@ -1,12 +1,26 @@
 // for convenience
 var loginButtonsSession = Accounts._loginButtonsSession;
 
+//
 // Activate semantic ui dropdowns
+// 
 Template._loginButtonsLoggedInDropdown.rendered = function() {
-	this.$('.dropdown').dropdown();
+	// activate the dropdown if it is not a "simple" dropdown
+	var dropdown = this.$('.dropdown');
+	if (dropdown.length > 0) {
+		if (! dropdown.hasClass('simple')) {
+			dropdown.dropdown();
+		}
+	}
 }
 Template._loginButtonsLoggedOutDropdown.rendered = function() {
-	this.$('.dropdown').dropdown();
+	// activate the dropdown if it is not a "simple" dropdown
+	var dropdown = this.$('.dropdown');
+	if (dropdown.length > 0) {
+		if (! dropdown.hasClass('simple')) {
+			dropdown.dropdown();
+		}
+	}
 }
 
 // events shared between loginButtonsLoggedOutDropdown and
@@ -47,6 +61,10 @@ Template._loginButtonsLoggedInDropdown.helpers({
 
 	dropdownVisible: function () {
 		return loginButtonsSession.get('dropdownVisible');
+	},
+
+	dropdownClasses: function () {
+		return Accounts.ui._options.dropdownClasses || '';
 	}
 });
 
@@ -192,7 +210,11 @@ Template._loginButtonsLoggedOutDropdown.helpers({
 		return loginButtonsSession.get('dropdownVisible');
 	},
 
-	hasPasswordService: hasPasswordService
+	hasPasswordService: hasPasswordService,
+
+	dropdownClasses: function () {
+		return Accounts.ui._options.dropdownClasses || '';
+	}
 });
 
 // return all login services, with password last

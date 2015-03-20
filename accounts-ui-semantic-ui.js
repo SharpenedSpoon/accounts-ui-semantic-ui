@@ -24,24 +24,29 @@ Accounts.ui._options = {
 */
 Accounts.ui.config = function(options) {
 	// validate options keys
-	var VALID_KEYS = ['passwordSignupFields', 'requestPermissions', 'requestOfflineToken', 'forceApprovalPrompt'];
+	var VALID_KEYS = ['passwordSignupFields', 'requestPermissions', 'requestOfflineToken', 'forceApprovalPrompt', 'dropdownClasses'];
 	_.each(_.keys(options), function (key) {
 		if (!_.contains(VALID_KEYS, key))
 			throw new Error("Accounts.ui.config: Invalid key: " + key);
 	});
 
+	// deal with `dropdownClasses`
+	if (options.dropdownClasses) {
+		Accounts.ui._options.dropdownClasses = options.dropdownClasses;
+	}
+
 	// deal with `passwordSignupFields`
 	if (options.passwordSignupFields) {
 		if (_.contains([
-		"USERNAME_AND_EMAIL",
-		"USERNAME_AND_OPTIONAL_EMAIL",
-		"USERNAME_ONLY",
-		"EMAIL_ONLY"
+			"USERNAME_AND_EMAIL",
+			"USERNAME_AND_OPTIONAL_EMAIL",
+			"USERNAME_ONLY",
+			"EMAIL_ONLY"
 		], options.passwordSignupFields)) {
 			if (Accounts.ui._options.passwordSignupFields)
 				throw new Error("Accounts.ui.config: Can't set `passwordSignupFields` more than once");
 			else
-			Accounts.ui._options.passwordSignupFields = options.passwordSignupFields;
+				Accounts.ui._options.passwordSignupFields = options.passwordSignupFields;
 		} else {
 			throw new Error("Accounts.ui.config: Invalid option for `passwordSignupFields`: " + options.passwordSignupFields);
 		}
