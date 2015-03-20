@@ -26,19 +26,19 @@ Package.onUse(function(api) {
 	api.use('accounts-password', {weak: true});
 
 	api.addFiles([
-		// 'accounts-ui-semantic-ui.js',
+		'accounts-ui-semantic-ui.js',
 
 		'login-buttons.html',
 		'login-buttons-single.html',
 		'login-buttons-dropdown.html',
 		'login-buttons-dialogs.html',
 
-		// 'login-buttons-session.js',
+		'login-buttons-session.js',
 
-		// 'login-buttons.js',
-		// 'login-buttons-single.js',
-		// 'login-buttons-dropdown.js',
-		// 'login-buttons-dialogs.js'
+		'login-buttons.js',
+		'login-buttons-single.js',
+		'login-buttons-dropdown.js',
+		'login-buttons-dialogs.js'
 	], 'client');
 });
 
