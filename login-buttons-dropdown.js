@@ -338,26 +338,35 @@ Template._loginButtonsChangePassword.events({
 Template._loginButtonsChangePassword.helpers({
 	fields: function () {
 		return [
-		{fieldName: 'old-password', fieldLabel: 'Current Password', inputType: 'password',
-		visible: function () {
-			return true;
-		}},
-		{fieldName: 'password', fieldLabel: 'New Password', inputType: 'password',
-		visible: function () {
-			return true;
-		}},
-		{fieldName: 'password-again', fieldLabel: 'New Password (again)',
-		inputType: 'password',
-		visible: function () {
-// No need to make users double-enter their password if
-// they'll necessarily have an email set, since they can use
-// the "forgot password" flow.
-return _.contains(
-["USERNAME_AND_OPTIONAL_EMAIL", "USERNAME_ONLY"],
-passwordSignupFields());
-}}
-];
-}
+			{
+				fieldName: 'old-password',
+				fieldLabel: 'Current Password',
+				inputType: 'password',
+				visible: function () {
+					return true;
+				}
+			},
+			{
+				fieldName: 'password',
+				fieldLabel: 'New Password',
+				inputType: 'password',
+				visible: function () {
+					return true;
+				}
+			},
+			{
+				fieldName: 'password-again',
+				fieldLabel: 'New Password (again)',
+				inputType: 'password',
+				visible: function () {
+					// No need to make users double-enter their password if
+					// they'll necessarily have an email set, since they can use
+					// the "forgot password" flow.
+					return _.contains( ["USERNAME_AND_OPTIONAL_EMAIL", "USERNAME_ONLY"], passwordSignupFields());
+				}
+			}
+		];
+	}
 });
 
 
@@ -368,24 +377,24 @@ passwordSignupFields());
 var elementValueById = function(id) {
 	var element = document.getElementById(id);
 	if (!element)
-	return null;
-else
-return element.value;
+		return null;
+	else
+		return element.value;
 };
 
 var trimmedElementValueById = function(id) {
 	var element = document.getElementById(id);
 	if (!element)
-	return null;
-else
-return element.value.replace(/^\s*|\s*$/g, ""); // trim() doesn't work on IE8;
+		return null;
+	else
+		return element.value.replace(/^\s*|\s*$/g, ""); // trim() doesn't work on IE8;
 };
 
 var loginOrSignup = function () {
 	if (loginButtonsSession.get('inSignupFlow'))
-	signup();
-else
-login();
+		signup();
+	else
+		login();
 };
 
 var login = function () {
@@ -394,78 +403,78 @@ var login = function () {
 	var username = trimmedElementValueById('login-username');
 	var email = trimmedElementValueById('login-email');
 	var usernameOrEmail = trimmedElementValueById('login-username-or-email');
-// notably not trimmed. a password could (?) start or end with a space
-var password = elementValueById('login-password');
+	// notably not trimmed. a password could (?) start or end with a space
+	var password = elementValueById('login-password');
 
-var loginSelector;
-if (username !== null) {
-	if (!validateUsername(username))
-	return;
-else
-loginSelector = {username: username};
-} else if (email !== null) {
-	if (!validateEmail(email))
-	return;
-else
-loginSelector = {email: email};
-} else if (usernameOrEmail !== null) {
-// XXX not sure how we should validate this. but this seems good enough (for now),
-// since an email must have at least 3 characters anyways
-if (!validateUsername(usernameOrEmail))
-return;
-else
-loginSelector = usernameOrEmail;
-} else {
-	throw new Error("Unexpected -- no element to use as a login user selector");
-}
+	var loginSelector;
+	if (username !== null) {
+		if (!validateUsername(username))
+			return;
+		else
+			loginSelector = {username: username};
+	} else if (email !== null) {
+		if (!validateEmail(email))
+			return;
+		else
+			loginSelector = {email: email};
+	} else if (usernameOrEmail !== null) {
+		// XXX not sure how we should validate this. but this seems good enough (for now),
+		// since an email must have at least 3 characters anyways
+		if (!validateUsername(usernameOrEmail))
+			return;
+		else
+			loginSelector = usernameOrEmail;
+		} else {
+			throw new Error("Unexpected -- no element to use as a login user selector");
+		}
 
-Meteor.loginWithPassword(loginSelector, password, function (error, result) {
-	if (error) {
-		loginButtonsSession.errorMessage(error.reason || "Unknown error");
-	} else {
-		loginButtonsSession.closeDropdown();
-	}
-});
+		Meteor.loginWithPassword(loginSelector, password, function (error, result) {
+			if (error) {
+				loginButtonsSession.errorMessage(error.reason || "Unknown error");
+			} else {
+				loginButtonsSession.closeDropdown();
+			}
+		});
 };
 
 var signup = function () {
 	loginButtonsSession.resetMessages();
 
-var options = {}; // to be passed to Accounts.createUser
+	var options = {}; // to be passed to Accounts.createUser
 
-var username = trimmedElementValueById('login-username');
-if (username !== null) {
-	if (!validateUsername(username))
-	return;
-else
-options.username = username;
-}
-
-var email = trimmedElementValueById('login-email');
-if (email !== null) {
-	if (!validateEmail(email))
-	return;
-else
-options.email = email;
-}
-
-// notably not trimmed. a password could (?) start or end with a space
-var password = elementValueById('login-password');
-if (!validatePassword(password))
-return;
-else
-options.password = password;
-
-if (!matchPasswordAgainIfPresent())
-return;
-
-Accounts.createUser(options, function (error) {
-	if (error) {
-		loginButtonsSession.errorMessage(error.reason || "Unknown error");
-	} else {
-		loginButtonsSession.closeDropdown();
+	var username = trimmedElementValueById('login-username');
+	if (username !== null) {
+		if (!validateUsername(username))
+			return;
+		else
+			options.username = username;
 	}
-});
+
+	var email = trimmedElementValueById('login-email');
+	if (email !== null) {
+		if (!validateEmail(email))
+			return;
+		else
+			options.email = email;
+	}
+
+	// notably not trimmed. a password could (?) start or end with a space
+	var password = elementValueById('login-password');
+	if (!validatePassword(password))
+		return;
+	else
+		options.password = password;
+
+	if (!matchPasswordAgainIfPresent())
+		return;
+
+	Accounts.createUser(options, function (error) {
+		if (error) {
+			loginButtonsSession.errorMessage(error.reason || "Unknown error");
+		} else {
+			loginButtonsSession.closeDropdown();
+		}
+	});
 };
 
 var forgotPassword = function () {
@@ -475,10 +484,10 @@ var forgotPassword = function () {
 	if (email.indexOf('@') !== -1) {
 		Accounts.forgotPassword({email: email}, function (error) {
 			if (error)
-			loginButtonsSession.errorMessage(error.reason || "Unknown error");
-		else
-		loginButtonsSession.infoMessage("Email sent");
-});
+				loginButtonsSession.errorMessage(error.reason || "Unknown error");
+			else
+				loginButtonsSession.infoMessage("Email sent");
+		});
 	} else {
 		loginButtonsSession.errorMessage("Invalid email");
 	}
@@ -487,55 +496,53 @@ var forgotPassword = function () {
 var changePassword = function () {
 	loginButtonsSession.resetMessages();
 
-// notably not trimmed. a password could (?) start or end with a space
-var oldPassword = elementValueById('login-old-password');
+	// notably not trimmed. a password could (?) start or end with a space
+	var oldPassword = elementValueById('login-old-password');
 
-// notably not trimmed. a password could (?) start or end with a space
-var password = elementValueById('login-password');
-if (!validatePassword(password))
-return;
+	// notably not trimmed. a password could (?) start or end with a space
+	var password = elementValueById('login-password');
+	if (!validatePassword(password))
+		return;
 
-if (!matchPasswordAgainIfPresent())
-return;
+	if (!matchPasswordAgainIfPresent())
+		return;
 
-Accounts.changePassword(oldPassword, password, function (error) {
-	if (error) {
-		loginButtonsSession.errorMessage(error.reason || "Unknown error");
-	} else {
-		loginButtonsSession.set('inChangePasswordFlow', false);
-		loginButtonsSession.set('inMessageOnlyFlow', true);
-		loginButtonsSession.infoMessage("Password changed");
-	}
-});
+	Accounts.changePassword(oldPassword, password, function (error) {
+		if (error) {
+			loginButtonsSession.errorMessage(error.reason || "Unknown error");
+		} else {
+			loginButtonsSession.set('inChangePasswordFlow', false);
+			loginButtonsSession.set('inMessageOnlyFlow', true);
+			loginButtonsSession.infoMessage("Password changed");
+		}
+	});
 };
 
 var matchPasswordAgainIfPresent = function () {
-// notably not trimmed. a password could (?) start or end with a space
-var passwordAgain = elementValueById('login-password-again');
-if (passwordAgain !== null) {
-// notably not trimmed. a password could (?) start or end with a space
-var password = elementValueById('login-password');
-if (password !== passwordAgain) {
-	loginButtonsSession.errorMessage("Passwords don't match");
-	return false;
-}
-}
-return true;
+	// notably not trimmed. a password could (?) start or end with a space
+	var passwordAgain = elementValueById('login-password-again');
+	if (passwordAgain !== null) {
+		// notably not trimmed. a password could (?) start or end with a space
+		var password = elementValueById('login-password');
+		if (password !== passwordAgain) {
+			loginButtonsSession.errorMessage("Passwords don't match");
+			return false;
+		}
+	}
+	return true;
 };
 
 var correctDropdownZIndexes = function () {
-// IE <= 7 has a z-index bug that means we can't just give the
-// dropdown a z-index and expect it to stack above the rest of
-// the page even if nothing else has a z-index.  The nature of
-// the bug is that all positioned elements are considered to
-// have z-index:0 (not auto) and therefore start new stacking
-// contexts, with ties broken by page order.
-//
-// The fix, then is to give z-index:1 to all ancestors
-// of the dropdown having z-index:0.
-for(var n = document.getElementById('login-dropdown-list').parentNode;
-n.nodeName !== 'BODY';
-n = n.parentNode)
-if (n.style.zIndex === 0)
-n.style.zIndex = 1;
+	// IE <= 7 has a z-index bug that means we can't just give the
+	// dropdown a z-index and expect it to stack above the rest of
+	// the page even if nothing else has a z-index.  The nature of
+	// the bug is that all positioned elements are considered to
+	// have z-index:0 (not auto) and therefore start new stacking
+	// contexts, with ties broken by page order.
+	//
+	// The fix, then is to give z-index:1 to all ancestors
+	// of the dropdown having z-index:0.
+	for(var n = document.getElementById('login-dropdown-list').parentNode; n.nodeName !== 'BODY'; n = n.parentNode)
+			if (n.style.zIndex === 0)
+				n.style.zIndex = 1;
 };
