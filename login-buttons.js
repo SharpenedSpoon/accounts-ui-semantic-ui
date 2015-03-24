@@ -148,6 +148,19 @@ Template._loginButtonsLoggedInSingleLogoutButton.helpers({
 //
 // loginButtonsMessage template
 //
+Template._loginButtonsMessagesMenuItem.helpers({
+	hasMessages: function() {
+		var hasMessages = false,
+		    errorMessage = loginButtonsSession.get('errorMessage'),
+		    infoMessage = loginButtonsSession.get('infoMessage');
+		if (errorMessage && errorMessage != '')
+			hasMessages = true;
+		if (infoMessage && infoMessage != '')
+			hasMessages = true;
+		return hasMessages;
+	}
+});
+
 Template._loginButtonsMessages.helpers({
 	errorMessage: function () {
 		return loginButtonsSession.get('errorMessage');

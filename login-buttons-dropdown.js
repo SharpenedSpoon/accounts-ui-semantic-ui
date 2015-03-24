@@ -7,18 +7,22 @@ var loginButtonsSession = Accounts._loginButtonsSession;
 Template._loginButtonsLoggedInDropdown.rendered = function() {
 	// activate the dropdown if it is not a "simple" dropdown
 	var dropdown = this.$('.dropdown');
-	if (dropdown.length > 0) {
-		if (! dropdown.hasClass('simple')) {
-			dropdown.dropdown();
-		}
-	}
+	maybeActivateSemanticDropdown(dropdown);
+	
 }
 Template._loginButtonsLoggedOutDropdown.rendered = function() {
 	// activate the dropdown if it is not a "simple" dropdown
 	var dropdown = this.$('.dropdown');
-	if (dropdown.length > 0) {
-		if (! dropdown.hasClass('simple')) {
-			dropdown.dropdown();
+	maybeActivateSemanticDropdown(dropdown);
+}
+var maybeActivateSemanticDropdown = function(dropdownElement) {
+	if (dropdownElement.length > 0) {
+		// users can specify extra classes in the {{> loginButtons}} template helper, and hence the dropdown might be "simple" and not need any JS attached at all.
+		if (! dropdownElement.hasClass('simple')) {
+			dropdownElement.dropdown({
+				action: 'nothing', // when user clicks on button/item in dropdown, do not do anything (by default, it will close the dropdown)
+				onChange: function() {}
+			});
 		}
 	}
 }
@@ -26,7 +30,8 @@ Template._loginButtonsLoggedOutDropdown.rendered = function() {
 // events shared between loginButtonsLoggedOutDropdown and
 // loginButtonsLoggedInDropdown
 Template.loginButtons.events({
-	'click #login-name-link, click #login-sign-in-link': function () {
+	'click #login-name-link, click #login-sign-in-link': function (e) {
+		e.preventDefault(); // semantic wants to close the dropdown when you change dropdown "views"
 		loginButtonsSession.set('dropdownVisible', true);
 		Tracker.flush();
 		correctDropdownZIndexes();
@@ -42,7 +47,8 @@ Template.loginButtons.events({
 //
 
 Template._loginButtonsLoggedInDropdown.events({
-	'click #login-buttons-open-change-password': function() {
+	'click #login-buttons-open-change-password': function(e) {
+		e.preventDefault(); // semantic wants to close the dropdown when you change dropdown "views"
 		loginButtonsSession.resetMessages();
 		loginButtonsSession.set('inChangePasswordFlow', true);
 	}

@@ -45,9 +45,11 @@
 
 <!-- used in various places to display messages to user -->
 <template name="_loginButtonsMessagesMenuItem">
-	<div class="ui fluid input">
-		{{> _loginButtonsMessages}}
-	</div>
+	{{#if hasMessages}}
+		<div class="ui fluid input">
+			{{> _loginButtonsMessages}}
+		</div>
+	{{/if}}
 </template>
 
 <template name="_loginButtonsMessages">
