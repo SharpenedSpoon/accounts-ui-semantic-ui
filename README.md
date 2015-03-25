@@ -36,10 +36,10 @@ This package is mainly based around the dropdown component. I have done my best 
 
 The components used are (in order of "importance"/frequency):
 
-* [Dropdown]<http://semantic-ui.com/modules/dropdown.html> (CSS and JS)
-* [Modal]<http://semantic-ui.com/modules/modal.html> (CSS and JS)
-* [Menu]<http://semantic-ui.com/collections/menu.html> (CSS)
-* [Form]<http://semantic-ui.com/collections/form.html> (CSS)
-* [Button]<http://semantic-ui.com/elements/button.html> (CSS)
-* [Divider]<http://semantic-ui.com/elements/divider.html> (CSS)
-* [Loader]<http://semantic-ui.com/elements/loader.html> (CSS)
+* [Dropdown](http://semantic-ui.com/modules/dropdown.html) (CSS and JS)
+* [Modal](http://semantic-ui.com/modules/modal.html) (CSS and JS)
+* [Menu](http://semantic-ui.com/collections/menu.html) (CSS)
+* [Form](http://semantic-ui.com/collections/form.html) (CSS)
+* [Button](http://semantic-ui.com/elements/button.html) (CSS)
+* [Divider](http://semantic-ui.com/elements/divider.html) (CSS)
+* [Loader](http://semantic-ui.com/elements/loader.html) (CSS)
