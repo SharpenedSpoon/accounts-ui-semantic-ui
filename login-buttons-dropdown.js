@@ -241,60 +241,96 @@ Template._loginButtonsLoggedOutAllServices.helpers({
 Template._loginButtonsLoggedOutPasswordService.helpers({
 	fields: function () {
 		var loginFields = [
-		{fieldName: 'username-or-email', fieldLabel: 'Username or Email',
-		visible: function () {
-			return _.contains(
-			["USERNAME_AND_EMAIL", "USERNAME_AND_OPTIONAL_EMAIL"],
-			passwordSignupFields());
-		}},
-		{fieldName: 'username', fieldLabel: 'Username',
-		visible: function () {
-			return passwordSignupFields() === "USERNAME_ONLY";
-		}},
-		{fieldName: 'email', fieldLabel: 'Email', inputType: 'email',
-		visible: function () {
-			return passwordSignupFields() === "EMAIL_ONLY";
-		}},
-		{fieldName: 'password', fieldLabel: 'Password', inputType: 'password',
-		visible: function () {
-			return true;
-		}}
+			{
+				fieldName: 'username-or-email',
+				fieldLabel: 'Username or Email',
+				visible: function () {
+					return _.contains(
+						["USERNAME_AND_EMAIL", "USERNAME_AND_OPTIONAL_EMAIL"],
+						passwordSignupFields()
+					);
+				}
+			},
+			{
+				fieldName: 'username',
+				fieldLabel: 'Username',
+				visible: function () {
+					return passwordSignupFields() === "USERNAME_ONLY";
+				}
+			},
+			{
+				fieldName: 'email',
+				fieldLabel: 'Email',
+				inputType: 'email',
+				visible: function () {
+					return passwordSignupFields() === "EMAIL_ONLY";
+				}
+			},
+			{
+				fieldName: 'password',
+				fieldLabel: 'Password',
+				inputType: 'password',
+				visible: function () {
+					return true;
+				}
+			}
 		];
 
 		var signupFields = [
-		{fieldName: 'username', fieldLabel: 'Username',
-		visible: function () {
-			return _.contains(
-			["USERNAME_AND_EMAIL", "USERNAME_AND_OPTIONAL_EMAIL", "USERNAME_ONLY"],
-			passwordSignupFields());
-		}},
-		{fieldName: 'email', fieldLabel: 'Email', inputType: 'email',
-		visible: function () {
-			return _.contains(
-			["USERNAME_AND_EMAIL", "EMAIL_ONLY"],
-			passwordSignupFields());
-		}},
-		{fieldName: 'email', fieldLabel: 'Email (optional)', inputType: 'email',
-		visible: function () {
-			return passwordSignupFields() === "USERNAME_AND_OPTIONAL_EMAIL";
-		}},
-		{fieldName: 'password', fieldLabel: 'Password', inputType: 'password',
-		visible: function () {
-			return true;
-		}},
-		{fieldName: 'password-again', fieldLabel: 'Password (again)',
-		inputType: 'password',
-		visible: function () {
-	// No need to make users double-enter their password if
-	// they'll necessarily have an email set, since they can use
-	// the "forgot password" flow.
-	return _.contains(
-	["USERNAME_AND_OPTIONAL_EMAIL", "USERNAME_ONLY"],
-	passwordSignupFields());
-	}}
-	];
+			{
+				fieldName: 'username',
+				fieldLabel: 'Username',
+				visible: function () {
+					return _.contains(
+					["USERNAME_AND_EMAIL", "USERNAME_AND_OPTIONAL_EMAIL", "USERNAME_ONLY"],
+					passwordSignupFields());
+				}
+			},
+			{
+				fieldName: 'email',
+				fieldLabel: 'Email',
+				inputType: 'email',
+				visible: function () {
+					return _.contains(
+					["USERNAME_AND_EMAIL", "EMAIL_ONLY"],
+					passwordSignupFields());
+				}
+			},
+			{
+				fieldName: 'email',
+				fieldLabel: 'Email (optional)',
+				inputType: 'email',
+				visible: function () {
+					return passwordSignupFields() === "USERNAME_AND_OPTIONAL_EMAIL";
+				}
+			},
+			{
+				fieldName: 'password',
+				fieldLabel: 'Password',
+				inputType: 'password',
+				visible: function () {
+					return true;
+				}
+			},
+			{
+				fieldName: 'password-again',
+				fieldLabel: 'Password (again)',
+				inputType: 'password',
+				visible: function () {
+					// No need to make users double-enter their password if
+					// they'll necessarily have an email set, since they can use
+					// the "forgot password" flow.
+					return _.contains(
+						["USERNAME_AND_OPTIONAL_EMAIL", "USERNAME_ONLY"],
+						passwordSignupFields()
+					);
+				}
+			}
+		];
 
-	return loginButtonsSession.get('inSignupFlow') ? signupFields : loginFields;
+		signupFields = signupFields.concat(Accounts.ui._options.extraSignupFields);
+
+		return loginButtonsSession.get('inSignupFlow') ? signupFields : loginFields;
 	},
 
 	inForgotPasswordFlow: function () {
@@ -315,14 +351,18 @@ Template._loginButtonsLoggedOutPasswordService.helpers({
 
 	showForgotPasswordLink: function () {
 		return _.contains(
-		["USERNAME_AND_EMAIL", "USERNAME_AND_OPTIONAL_EMAIL", "EMAIL_ONLY"],
-		passwordSignupFields());
+			["USERNAME_AND_EMAIL", "USERNAME_AND_OPTIONAL_EMAIL", "EMAIL_ONLY"],
+			passwordSignupFields()
+		);
 	}
 });
 
 Template._loginButtonsFormField.helpers({
 	inputType: function () {
 		return this.inputType || "text";
+	},
+	equals: function(a, b) {
+		return (a === b);
 	}
 });
 
@@ -473,6 +513,44 @@ var signup = function () {
 
 	if (!matchPasswordAgainIfPresent())
 		return;
+
+	// 
+	// Parsing and storing extra signup fields. Code from ian:accounts-ui-bootstrap-3
+	//
+	
+	// prepare the profile object if needed
+	if (! (options.profile instanceof Object)) {
+		options.profile = {};
+	}
+
+	// define a proxy function to allow extraSignupFields to set error messages
+	var errorFunction = function(errorMessage) {
+		Accounts._loginButtonsSession.errorMessage(errorMessage);
+	}
+
+	var invalidExtraSignupFields = false;
+
+	// parse and populate fields
+	_.each(Accounts.ui._options.extraSignupFields, function(field, index) {
+		var value = elementValueById('login-' + field.fieldName);
+		if (typeof field.validate == 'function') {
+			if (field.validate(value, errorFunction)) {
+				if (typeof field.saveToProfile !== 'undefined' && ! field.saveToProfile) {
+					options[field.fieldName] = value;
+				} else {
+					options.profile[field.fieldName] = value;
+				}
+			} else {
+				invalidExtraSignupFields = true;
+			}
+		} else {
+			options.profile[field.fieldName] = value;
+		}
+	});
+
+	if (invalidExtraSignupFields) {
+		return;
+	}
 
 	Accounts.createUser(options, function (error) {
 		if (error) {

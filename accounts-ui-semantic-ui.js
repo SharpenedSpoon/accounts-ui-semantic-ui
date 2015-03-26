@@ -8,7 +8,8 @@ Accounts.ui = {};
 Accounts.ui._options = {
 	requestPermissions: {},
 	requestOfflineToken: {},
-	forceApprovalPrompt: {}
+	forceApprovalPrompt: {},
+	extraSignupFields: []
 };
 
 // XXX refactor duplicated code in this function
@@ -24,7 +25,7 @@ Accounts.ui._options = {
 */
 Accounts.ui.config = function(options) {
 	// validate options keys
-	var VALID_KEYS = ['passwordSignupFields', 'requestPermissions', 'requestOfflineToken', 'forceApprovalPrompt', 'dropdownClasses'];
+	var VALID_KEYS = ['passwordSignupFields', 'requestPermissions', 'requestOfflineToken', 'forceApprovalPrompt', 'dropdownClasses', 'extraSignupFields'];
 	_.each(_.keys(options), function (key) {
 		if (!_.contains(VALID_KEYS, key))
 			throw new Error("Accounts.ui.config: Invalid key: " + key);
@@ -33,6 +34,25 @@ Accounts.ui.config = function(options) {
 	// deal with `dropdownClasses`
 	if (options.dropdownClasses) {
 		Accounts.ui._options.dropdownClasses = options.dropdownClasses;
+	}
+
+	// deal with extra signup fields
+	// swiped from ian:accounts-ui-bootstrap-3... you rock!
+	options.extraSignupFields = options.extraSignupFields || [];
+	if (typeof options.extraSignupFields !== 'object' || !options.extraSignupFields instanceof Array) {
+		throw new Error("Accounts.ui.config: `extraSignupFields` must be an array.");
+	} else {
+		if (options.extraSignupFields) {
+			_.each(options.extraSignupFields, function(field, index) {
+				if (!field.fieldName || !field.fieldLabel){
+					throw new Error("Accounts.ui.config: `extraSignupFields` objects must have `fieldName` and `fieldLabel` attributes.");
+				}
+				if (typeof field.visible === 'undefined'){
+					field.visible = true;
+				}
+				Accounts.ui._options.extraSignupFields[index] = field;
+			});
+		}
 	}
 
 	// deal with `passwordSignupFields`

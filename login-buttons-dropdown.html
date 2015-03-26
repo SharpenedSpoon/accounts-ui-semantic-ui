@@ -150,12 +150,30 @@ https://gist.github.com/968927
 <template name="_loginButtonsFormField">
 	{{#if visible}}
 		<div class="ui form fluid input">
-			<div class="field" id="login-{{fieldName}}-label-and-input">
-				<label id="login-{{fieldName}}-label" for="login-{{fieldName}}">
-					{{fieldLabel}}
-				</label>
-				<input id="login-{{fieldName}}" type="{{inputType}}" />
-			</div>
+			{{#if equals inputType "checkbox"}}
+				<div class="inline field" id="login-{{fieldName}}-label-and-input">
+					
+					{{#if useJS}}
+						<div class="ui {{fieldClasses}} checkbox">
+							<input type="checkbox" id="login-{{fieldName}}" name="login-{{fieldName}}" value="true" />
+							<label for="login-{{fieldName}}">{{fieldLabel}}</label>
+						</div>
+						<script type="text/javascript">$('#login-{{fieldName}}-label-and-input .checkbox').checkbox();</script>
+					{{else}}
+						<div class="ui {{fieldClasses}} checkbox">
+							<input type="checkbox" id="login-{{fieldName}}" name="login-{{fieldName}}" value="true" />
+							<label for="login-{{fieldName}}">{{fieldLabel}}</label>
+						</div>
+					{{/if}}
+				</div>
+			{{else}}
+				<div class="field" id="login-{{fieldName}}-label-and-input">
+					<label id="login-{{fieldName}}-label" for="login-{{fieldName}}">
+						{{fieldLabel}}
+					</label>
+					<input id="login-{{fieldName}}" name="login-{{fieldName}}" type="{{inputType}}" />
+				</div>
+			{{/if}}
 		</div>
 	{{/if}}
 </template>
