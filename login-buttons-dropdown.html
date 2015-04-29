@@ -3,7 +3,8 @@
 <!--           -->
 <template name="_loginButtonsLoggedInDropdown">
 	<a class="ui dropdown item {{dropdownClasses}}">
-		<i class="dropdown icon"></i>{{displayName}}
+		{{displayName}}
+		<i class="dropdown icon"></i>
 		<div class="menu" id="login-dropdown-list">
 			{{#if inMessageOnlyFlow}}
 				{{> _loginButtonsMessagesMenuItem}}
@@ -188,6 +189,9 @@ https://gist.github.com/968927
 	<div class="ui fluid input">
 		<div class="ui primary button" id="login-buttons-do-change-password">
 			Change password
+		</div>
+		<div class="ui button" id="login-buttons-cancel-change-password">
+			Cancel
 		</div>
 	</div>
 </template>
