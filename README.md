@@ -36,9 +36,9 @@ These configuration options are optional! You can include zero, one, or both of 
 
 ## Custom Signup Fields
 
-One of my favorite features from [ian:accounts-ui-bootstrap-3]<https://github.com/ianmartorell/meteor-accounts-ui-bootstrap-3> is the ease with which you can add extra signup fields. I have implemented (nearly verbatim) his code for doing so, and so to add extra signup fields, you can pretty much just reference [his documentation]<https://github.com/ianmartorell/meteor-accounts-ui-bootstrap-3#custom-signup-options>.
+One of my favorite features from [ian:accounts-ui-bootstrap-3](https://github.com/ianmartorell/meteor-accounts-ui-bootstrap-3) is the ease with which you can add extra signup fields. I have implemented (nearly verbatim) his code for doing so, and so to add extra signup fields, you can pretty much just reference [his documentation](https://github.com/ianmartorell/meteor-accounts-ui-bootstrap-3#custom-signup-options).
 
-There is one small difference, however. Since Semantic UI supports a couple different [checkbox types]<http://semantic-ui.com/modules/checkbox.html>, I have added a couple fields to support this. Also, I feel like he didn't completely document his validation method, which is pretty slick! All that being said, it's probably worthwhile to show his example with the extra tweaks:
+There is one small difference, however. Since Semantic UI supports a couple different [checkbox types](http://semantic-ui.com/modules/checkbox.html), I have added a couple fields to support this. Also, I feel like he didn't completely document his validation method, which is pretty slick! All that being said, it's probably worthwhile to show his example with the extra tweaks:
 
 	Accounts.ui.config({
 		extraSignupFields: [
@@ -122,6 +122,9 @@ The components used are (in order of "importance"/frequency):
 * [Transition](http://semantic-ui.com/modules/transition.html) (JS)
 
 ## Changelog
+
+### Version 1.1.1 (2015-04-29)
+* Fixed minor markdown typo in readme.
 
 ### Version 1.1.0 (2015-04-29)
 * Added cancel button to "change password" view (Thanks, joryphillips!)
