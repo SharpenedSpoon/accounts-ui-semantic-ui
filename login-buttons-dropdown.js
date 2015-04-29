@@ -20,6 +20,8 @@ var maybeActivateSemanticDropdown = function(dropdownElement) {
 		// users can specify extra classes in the {{> loginButtons}} template helper, and hence the dropdown might be "simple" and not need any JS attached at all.
 		if (! dropdownElement.hasClass('simple')) {
 			dropdownElement.dropdown({
+				// I couldn't help myself -- I like this transition better
+				transition: 'drop',
 				action: 'nothing', // when user clicks on button/item in dropdown, do not do anything (by default, it will close the dropdown)
 				onChange: function() {}
 			});
@@ -105,7 +107,8 @@ Template._loginButtonsLoggedOutDropdown.events({
 		forgotPassword();
 	},
 
-	'click #signup-link': function () {
+	'click #signup-link': function (event) {
+		event.stopPropagation();
 		loginButtonsSession.resetMessages();
 
 		// store values of fields before swtiching to the signup form
@@ -166,7 +169,8 @@ Template._loginButtonsLoggedOutDropdown.events({
 				document.getElementById('forgot-password-email').value = usernameOrEmail;
 
 	},
-	'click #back-to-login-link': function () {
+	'click #back-to-login-link': function (event) {
+		event.stopPropagation();
 		loginButtonsSession.resetMessages();
 
 		var username = trimmedElementValueById('login-username');
@@ -378,6 +382,12 @@ Template._loginButtonsChangePassword.events({
 	},
 	'click #login-buttons-do-change-password': function () {
 		changePassword();
+	},
+	'click #login-buttons-cancel-change-password': function(event) {
+		event.stopPropagation();
+		loginButtonsSession.resetMessages();
+		Accounts._loginButtonsSession.set('inChangePasswordFlow', false);
+		Meteor.flush();
 	}
 });
 
