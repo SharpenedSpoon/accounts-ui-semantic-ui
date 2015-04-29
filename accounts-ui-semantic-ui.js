@@ -25,7 +25,7 @@ Accounts.ui._options = {
 */
 Accounts.ui.config = function(options) {
 	// validate options keys
-	var VALID_KEYS = ['passwordSignupFields', 'requestPermissions', 'requestOfflineToken', 'forceApprovalPrompt', 'dropdownClasses', 'extraSignupFields'];
+	var VALID_KEYS = ['passwordSignupFields', 'requestPermissions', 'requestOfflineToken', 'forceApprovalPrompt', 'dropdownClasses', 'dropdownTransition', 'extraSignupFields'];
 	_.each(_.keys(options), function (key) {
 		if (!_.contains(VALID_KEYS, key))
 			throw new Error("Accounts.ui.config: Invalid key: " + key);
@@ -34,6 +34,10 @@ Accounts.ui.config = function(options) {
 	// deal with `dropdownClasses`
 	if (options.dropdownClasses) {
 		Accounts.ui._options.dropdownClasses = options.dropdownClasses;
+	}
+
+	if (options.dropdownTransition) {
+		Accounts.ui._options.dropdownTransition = options.dropdownTransition;
 	}
 
 	// deal with extra signup fields

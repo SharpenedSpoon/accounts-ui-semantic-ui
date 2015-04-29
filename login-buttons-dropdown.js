@@ -19,12 +19,14 @@ var maybeActivateSemanticDropdown = function(dropdownElement) {
 	if (dropdownElement.length > 0) {
 		// users can specify extra classes in the {{> loginButtons}} template helper, and hence the dropdown might be "simple" and not need any JS attached at all.
 		if (! dropdownElement.hasClass('simple')) {
-			dropdownElement.dropdown({
-				// I couldn't help myself -- I like this transition better
-				transition: 'drop',
+			dropdownOptions = {
 				action: 'nothing', // when user clicks on button/item in dropdown, do not do anything (by default, it will close the dropdown)
 				onChange: function() {}
-			});
+			}
+			if (Accounts.ui._options.dropdownTransition) {
+				dropdownOptions.transition = Accounts.ui._options.dropdownTransition;
+			}
+			dropdownElement.dropdown(dropdownOptions);
 		}
 	}
 }

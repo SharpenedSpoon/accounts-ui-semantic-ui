@@ -16,13 +16,23 @@ This replaces/replicates the official `accounts-ui` package, so make sure to rem
 
 Just add `{{> loginButtons}}` to your template, as usual!
 
-Since I based all the code off of the official Meteor package, then the usual `Accounts.ui` configurations will work. I added one additional configuration option, however, which is `dropdownClasses`. That is, you can add the following to your config, along with any other options you might want:
+Since I based all the code off of the official Meteor package, then the usual `Accounts.ui` configurations will work. I added one additional configuration option, however, which is `dropdownClasses`. That is, you can (optionally) add the following to your config, along with any other options you might want:
 
 	Accounts.ui.config({
 		dropdownClasses: 'simple'
 	});
 
 The classes you specify will be added to the main `.ui.dropdown.item` element - I use this mostly to add a `simple` class to my dropdowns, but you might use it for any other classes. Note that I tried to make it somewhat intelligent, so that if the dropdown has the `simple` class, then it will not be initialized with `$('.dropdown').dropdown()`.
+
+Or you might add the following:
+
+	Accounts.ui.config({
+		dropdownTransition: 'drop'
+	});
+
+If you specify a dropdownTransition, then `.dropdown()` will be called with the given transition. You can see a list of possible Semantic UI transitions [here](http://semantic-ui.com/modules/transition.html). Thanks to joryphillips for the inspiration for this option!
+
+These configuration options are optional! You can include zero, one, or both of them (and change the values as you see fit). Note that a "simple" dropdown cannot also have transitions applied to it.
 
 ## Custom Signup Fields
 
@@ -109,8 +119,13 @@ The components used are (in order of "importance"/frequency):
 * [Button](http://semantic-ui.com/elements/button.html) (CSS)
 * [Divider](http://semantic-ui.com/elements/divider.html) (CSS)
 * [Loader](http://semantic-ui.com/elements/loader.html) (CSS)
+* [Transition](http://semantic-ui.com/modules/transition.html) (JS)
 
 ## Changelog
+
+### Version 1.1.0 (2015-04-29)
+* Added cancel button to "change password" view (Thanks, joryphillips!)
+* Prevented dropdown from closing when switching between views (such as login -> register) (Thanks, joryphillips!)
 
 ### Version 1.0.3 (2015-03-26)
 * Added `extraSignupFields` option
