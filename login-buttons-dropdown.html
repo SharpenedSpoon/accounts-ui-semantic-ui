@@ -21,14 +21,16 @@
 
 <template name="_loginButtonsLoggedInDropdownActions">
 	{{#if allowChangingPassword}}
-		<div class="item" id="login-buttons-open-change-password">
+		<a class="item" id="login-buttons-open-change-password">
+			<i class="edit icon"></i>
 			Change password
-		</div>
+		</a>
 	{{/if}}
 
-	<div class="item" id="login-buttons-logout">
+	<a class="item" id="login-buttons-logout">
+		<i class="sign out icon"></i>
 		Sign out
-	</div>
+	</a>
 
 	{{> _loginButtonsMessagesMenuItem}}
 </template>
@@ -49,25 +51,27 @@
 </template>
 
 <template name="_loginButtonsLoggedOutAllServices">
-	{{#each services}}
-		{{#if isPasswordService}}
-			{{#if hasOtherServices}} {{! the password service will always come last }}
-				{{> _loginButtonsLoggedOutPasswordServiceSeparator}}
+	<div class="ui item">
+		{{#each services}}
+			{{#if isPasswordService}}
+				{{#if hasOtherServices}} {{! the password service will always come last }}
+					{{> _loginButtonsLoggedOutPasswordServiceSeparator}}
+				{{/if}}
+				{{> _loginButtonsLoggedOutPasswordService}}
+			{{else}}
+				{{> _loginButtonsLoggedOutSingleLoginButton}}
 			{{/if}}
-			{{> _loginButtonsLoggedOutPasswordService}}
-		{{else}}
-			{{> _loginButtonsLoggedOutSingleLoginButton}}
-		{{/if}}
-	{{/each}}
+		{{/each}}
 
-	{{#unless hasPasswordService}}
-		{{> _loginButtonsMessagesMenuItem}}
-	{{/unless}}
+		{{#unless hasPasswordService}}
+			{{> _loginButtonsMessagesMenuItem}}
+		{{/unless}}
+	</div>
 </template>
 
 <template name="_loginButtonsLoggedOutPasswordServiceSeparator">
-	<div class="ui horizontal divider" style="height: auto; border-top: none;">
-		Or
+<!--	This pattern is more reusable and is less cluttered without the 'OR'. But I'm not 100% happy with how it works, and the hidden version creates too much space. -->
+	<div class="ui divider">
 	</div>
 </template>
 
@@ -75,40 +79,54 @@
 	{{#if inForgotPasswordFlow}}
 		{{> _forgotPasswordForm}}
 	{{else}}
-		{{#each fields}}
-			{{> _loginButtonsFormField}}
-		{{/each}}
+		<div class="ui fluid form">
+			{{#each fields}}
+				{{> _loginButtonsFormField}}
+			{{/each}}
 
-		{{> _loginButtonsMessagesMenuItem}}
+			{{> _loginButtonsMessagesMenuItem}}
 
-		<div class="ui fluid input">
-			<a class="ui primary button" id="login-buttons-password">
+			<button class="fluid ui primary button" id="login-buttons-password">
 				{{#if inSignupFlow}}
+					<i class="add user icon"></i>
 					Create account
 				{{else}}
+					<i class="sign in icon"></i>
 					Sign in
 				{{/if}}
-			</a>
+			</button>
+
+
+			{{#if inLoginFlow}}
+				{{#if showForgotPasswordLink}}
+					{{> _loginButtonsLoggedOutPasswordServiceSeparator}}
+
+					<button class="fluid ui button" id="forgot-password-link">
+						<i class="mail icon"></i>
+						Forgot password?
+					</button>
+				{{/if}}
+			
+				{{#if showCreateAccountLink}}
+						{{> _loginButtonsLoggedOutPasswordServiceSeparator}}
+<!--					<div class="ui segment">-->
+							<p>New User? <a id="signup-link">Create account</a></p>
+<!--					</div>-->
+				{{/if}}
+
+
+			{{/if}}
+
+			{{#if inSignupFlow}}
+				{{> _loginButtonsBackToLoginLink}}
+			{{/if}}
 		</div>
 
-		{{#if inLoginFlow}}
-			{{#if showCreateAccountLink}}
-				<a class="item" id="signup-link">Create account</a>
-			{{/if}}
-
-			{{#if showForgotPasswordLink}}
-				<a class="item" id="forgot-password-link">Forgot password</a>
-			{{/if}}
-		{{/if}}
-
-		{{#if inSignupFlow}}
-			{{> _loginButtonsBackToLoginLink}}
-		{{/if}}
 	{{/if}}
 </template>
 
 <template name="_forgotPasswordForm">
-	<div class="ui form fluid input">
+	<div class="ui fluid form">
 		<div class="field" id="forgot-password-email-label-and-input">
 			<label id="forgot-password-email-label" for="forgot-password-email">Email</label>
 			<input id="forgot-password-email" type="email"/>
@@ -116,16 +134,19 @@
 
 		{{> _loginButtonsMessages}}
 
-		<div class="ui primary button" id="login-buttons-forgot-password">
+		<button class="fluid ui primary button" id="login-buttons-forgot-password">
 			Reset password
-		</div>
+		</button>
 	</div>
 
 	{{> _loginButtonsBackToLoginLink}}
 </template>
 
 <template name="_loginButtonsBackToLoginLink">
-	<a id="back-to-login-link" class="ui item">Sign in</a>
+		{{> _loginButtonsLoggedOutPasswordServiceSeparator}}
+<!--	<div class="ui segment">-->
+			<p>Have an account? <a id="back-to-login-link">Sign in</a></p>
+<!--	</div>-->
 </template>
 
 
@@ -150,7 +171,6 @@ https://gist.github.com/968927
 
 <template name="_loginButtonsFormField">
 	{{#if visible}}
-		<div class="ui form fluid input">
 			{{#if equals inputType "checkbox"}}
 				<div class="inline field" id="login-{{fieldName}}-label-and-input">
 					
@@ -175,23 +195,27 @@ https://gist.github.com/968927
 					<input id="login-{{fieldName}}" name="login-{{fieldName}}" type="{{inputType}}" />
 				</div>
 			{{/if}}
-		</div>
 	{{/if}}
 </template>
 
 <template name="_loginButtonsChangePassword">
-	{{#each fields}}
-		{{> _loginButtonsFormField}}
-	{{/each}}
+	<div class="item">
+		<div class="ui form">
+			{{#each fields}}
+				{{> _loginButtonsFormField}}
+			{{/each}}
 
-	{{> _loginButtonsMessagesMenuItem}}
+			{{> _loginButtonsMessagesMenuItem}}
 
-	<div class="ui fluid input">
-		<div class="ui primary button" id="login-buttons-do-change-password">
-			Change password
-		</div>
-		<div class="ui button" id="login-buttons-cancel-change-password">
-			Cancel
+			<div class="ui items">
+				<button class="ui primary button" id="login-buttons-do-change-password">
+					<i class="edit icon"></i>
+					Change password
+				</button>
+				<button class="ui button" id="login-buttons-cancel-change-password">
+					Cancel
+				</button>
+			</div>
 		</div>
 	</div>
 </template>

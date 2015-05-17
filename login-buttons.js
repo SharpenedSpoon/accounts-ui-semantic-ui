@@ -134,11 +134,9 @@ Template._loginButtonsLoggedIn.helpers({
 });
 
 
-
 //
 // loginButtonsLoggedInSingleLogoutButton template
 //
-
 Template._loginButtonsLoggedInSingleLogoutButton.helpers({
 	displayName: displayName
 });
@@ -146,7 +144,7 @@ Template._loginButtonsLoggedInSingleLogoutButton.helpers({
 
 
 //
-// loginButtonsMessage template
+// loginButtonsMessageMenuItem helpers 
 //
 Template._loginButtonsMessagesMenuItem.helpers({
 	hasMessages: function() {
@@ -161,22 +159,38 @@ Template._loginButtonsMessagesMenuItem.helpers({
 	}
 });
 
-Template._loginButtonsMessages.helpers({
-	errorMessage: function () {
-		return loginButtonsSession.get('errorMessage');
-	}
+Template._loginButtonsMessages.onRendered(function() {
+	Meteor.setTimeout(function () {
+		$(".temp").fadeOut( "slow" ).remove();
+	}, 5000);
 });
 
+
+// loginButtonsMessage (combined)
+
 Template._loginButtonsMessages.helpers({
-	infoMessage: function () {
+	errorMessage: function() {
+		return loginButtonsSession.get('errorMessage');
+	},
+	infoMessage: function() {
 		return loginButtonsSession.get('infoMessage');
 	}
 });
 
 
+// ** below doesn't seem to be the issue with the password changed success message
+
+// Let's remove the messages when clicked.
+Template._loginButtonsMessages.onRendered(function() {
+	$(".message").click(function () {
+		$(this).fadeOut( "slow" );
+	});
+});
+
+
 //
 // loginButtonsLoggingInPadding template
-//
+// 
 
 Template._loginButtonsLoggingInPadding.helpers({
 	dropdown: dropdown
