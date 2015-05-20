@@ -46,19 +46,25 @@
 <!-- used in various places to display messages to user -->
 <template name="_loginButtonsMessagesMenuItem">
 	{{#if hasMessages}}
-		<div class="ui fluid input">
-			{{> _loginButtonsMessages}}
-		</div>
+		{{> _loginButtonsMessages}}
 	{{/if}}
 </template>
 
 <template name="_loginButtonsMessages">
 	{{#if errorMessage}}
-		<div class="ui visible error message">{{errorMessage}}</div>
+		<div class="ui visible error message">
+			{{errorMessage}}
+		</div>
 	{{/if}}
 	{{#if infoMessage}}
-		<div class="ui visible info message">{{infoMessage}}</div>
+		<div class="ui item">
+			<div class="ui visible info message">
+				{{infoMessage}}
+			</div>
+		</div>
+
 	{{/if}}
+	<div class="login-buttons-padding"></div>
 </template>
 
 <template name="_loginButtonsLoggingIn">

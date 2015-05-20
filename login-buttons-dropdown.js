@@ -101,11 +101,13 @@ Template._loginButtonsLoggedOutDropdown.events({
 	},
 
 	'keypress #forgot-password-email': function (event) {
+		event.stopPropagation();
 		if (event.keyCode === 13)
 			forgotPassword();
 	},
 
-	'click #login-buttons-forgot-password': function () {
+	'click #login-buttons-forgot-password': function (event) {
+		event.stopPropagation();
 		forgotPassword();
 	},
 
@@ -151,7 +153,8 @@ Template._loginButtonsLoggedOutDropdown.events({
 		redraw.offsetHeight; // it seems that this line does nothing but is necessary for the redraw to work
 		redraw.style.display = 'block';
 	},
-	'click #forgot-password-link': function () {
+	'click #forgot-password-link': function (event) {
+		event.stopPropagation();
 		loginButtonsSession.resetMessages();
 
 		// store values of fields before swtiching to the signup form
@@ -608,8 +611,14 @@ var changePassword = function () {
 			loginButtonsSession.errorMessage(error.reason || "Unknown error");
 		} else {
 			loginButtonsSession.set('inChangePasswordFlow', false);
-			loginButtonsSession.set('inMessageOnlyFlow', true);
+			// inMessageOnlyFlow is what is messing things up -- removing it doesn't result in the most elegant solution, but it works for now
+//			loginButtonsSession.set('inMessageOnlyFlow', true);
 			loginButtonsSession.infoMessage("Password changed");
+			
+			// wait 3 seconds, then expire the msg  **adding from bootstrap version
+			Meteor.setTimeout(function() {
+				loginButtonsSession.resetMessages();
+			}, 3000);
 		}
 	});
 };
