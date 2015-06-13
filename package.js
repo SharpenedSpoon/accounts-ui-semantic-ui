@@ -1,6 +1,6 @@
 Package.describe({
 	name: 'iandouglas:accounts-ui-semantic-ui',
-	version: '1.2.1',
+	version: '1.2.2',
 	summary: 'Semantic UI styled accounts-ui',
 	git: 'https://github.com/SharpenedSpoon/accounts-ui-semantic-ui',
 	documentation: 'README.md'

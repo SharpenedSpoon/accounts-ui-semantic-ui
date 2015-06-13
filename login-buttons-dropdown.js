@@ -6,13 +6,13 @@ var loginButtonsSession = Accounts._loginButtonsSession;
 //
 Template._loginButtonsLoggedInDropdown.rendered = function() {
 	// activate the dropdown if it is not a "simple" dropdown
-	var dropdown = this.$('.dropdown');
+	var dropdown = this.$('#login-dropdown');
 	maybeActivateSemanticDropdown(dropdown);
 
 }
 Template._loginButtonsLoggedOutDropdown.rendered = function() {
 	// activate the dropdown if it is not a "simple" dropdown
-	var dropdown = this.$('.dropdown');
+	var dropdown = this.$('#login-dropdown');
 	maybeActivateSemanticDropdown(dropdown);
 }
 var maybeActivateSemanticDropdown = function(dropdownElement) {

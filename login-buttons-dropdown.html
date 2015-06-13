@@ -2,7 +2,7 @@
 <!-- LOGGED IN -->
 <!--           -->
 <template name="_loginButtonsLoggedInDropdown">
-	<a class="ui dropdown item {{dropdownClasses}}">
+	<a class="ui dropdown item {{dropdownClasses}}" id="login-dropdown">
 		{{displayName}}
 		<i class="dropdown icon"></i>
 		<div class="menu" id="login-dropdown-list">
@@ -43,7 +43,7 @@
 <!-- LOGGED OUT -->
 <!--            -->
 <template name="_loginButtonsLoggedOutDropdown">
-	<a class="ui dropdown item {{dropdownClasses}}">
+	<a class="ui dropdown item {{dropdownClasses}}" id="login-dropdown">
 		<i class="dropdown icon"></i>Sign in
 		<div class="menu" id="login-dropdown-list">
 			{{#if loggingIn}}
@@ -74,9 +74,8 @@
 </template>
 
 <template name="_loginButtonsLoggedOutPasswordServiceSeparator">
-<!--	This pattern is more reusable and is less cluttered without the 'OR'. But I'm not 100% happy with how it works, and the hidden version creates too much space. -->
-	<div class="ui divider">
-	</div>
+	<!--	This pattern is more reusable and is less cluttered without the 'OR'. But I'm not 100% happy with how it works, and the hidden version creates too much space. -->
+	<div class="ui divider"></div>
 </template>
 
 <template name="_loginButtonsLoggedOutPasswordService">

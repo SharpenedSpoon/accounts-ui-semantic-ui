@@ -129,6 +129,13 @@ The components used are (in order of "importance"/frequency):
 
 ## Changelog
 
+### Version 1.2.2 (2015-06-12)
+* Pushed previous version to atmosphere and immediately found a bug. That's how it goes, right? I should push all my projects to atmosphere - I bet I'd find bugs a lot quicker!
+* Fixed bug wherein another dropdown in the addition logged in dropdown template breaks the parent dropdown
+
+### Version 1.2.1 (2015-06-12)
+* Added (optional) template, `_loginButtonsAdditionalLoggedInDropdownActions` which can be defined and will then be rendered within the logged in dropdown.
+
 ### Version 1.2.0 (2015-06-08)
 * Implementing more amazing fixes from joryphillips
 * Added dropdown transition option
