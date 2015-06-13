@@ -20,6 +20,10 @@
 </template>
 
 <template name="_loginButtonsLoggedInDropdownActions">
+	{{#if hasAdditionalDropdownTemplate}}
+		{{> _loginButtonsAdditionalLoggedInDropdownActions}}
+	{{/if}}
+
 	{{#if allowChangingPassword}}
 		<a class="item" id="login-buttons-open-change-password">
 			<i class="edit icon"></i>
@@ -106,7 +110,7 @@
 						Forgot password?
 					</button>
 				{{/if}}
-			
+
 				{{#if showCreateAccountLink}}
 						{{> _loginButtonsLoggedOutPasswordServiceSeparator}}
 <!--					<div class="ui segment">-->
@@ -173,7 +177,7 @@ https://gist.github.com/968927
 	{{#if visible}}
 			{{#if equals inputType "checkbox"}}
 				<div class="inline field" id="login-{{fieldName}}-label-and-input">
-					
+
 					{{#if useJS}}
 						<div class="ui {{fieldClasses}} checkbox">
 							<input type="checkbox" id="login-{{fieldName}}" name="login-{{fieldName}}" value="true" />

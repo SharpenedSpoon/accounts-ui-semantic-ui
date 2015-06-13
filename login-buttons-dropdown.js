@@ -3,12 +3,12 @@ var loginButtonsSession = Accounts._loginButtonsSession;
 
 //
 // Activate semantic ui dropdowns
-// 
+//
 Template._loginButtonsLoggedInDropdown.rendered = function() {
 	// activate the dropdown if it is not a "simple" dropdown
 	var dropdown = this.$('.dropdown');
 	maybeActivateSemanticDropdown(dropdown);
-	
+
 }
 Template._loginButtonsLoggedOutDropdown.rendered = function() {
 	// activate the dropdown if it is not a "simple" dropdown
@@ -87,6 +87,10 @@ Template._loginButtonsLoggedInDropdownActions.helpers({
 		// instead we use the heuristic: if the user has a username or email set.
 		var user = Meteor.user();
 		return user.username || (user.emails && user.emails[0] && user.emails[0].address);
+	},
+
+	hasAdditionalDropdownTemplate: function() {
+		return Template._loginButtonsAdditionalLoggedInDropdownActions !== undefined;
 	}
 });
 
@@ -529,10 +533,10 @@ var signup = function () {
 	if (!matchPasswordAgainIfPresent())
 		return;
 
-	// 
+	//
 	// Parsing and storing extra signup fields. Code from ian:accounts-ui-bootstrap-3
 	//
-	
+
 	// prepare the profile object if needed
 	if (! (options.profile instanceof Object)) {
 		options.profile = {};
@@ -614,7 +618,7 @@ var changePassword = function () {
 			// inMessageOnlyFlow is what is messing things up -- removing it doesn't result in the most elegant solution, but it works for now
 //			loginButtonsSession.set('inMessageOnlyFlow', true);
 			loginButtonsSession.infoMessage("Password changed");
-			
+
 			// wait 3 seconds, then expire the msg  **adding from bootstrap version
 			Meteor.setTimeout(function() {
 				loginButtonsSession.resetMessages();

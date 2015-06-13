@@ -100,6 +100,12 @@ There is one small difference, however. Since Semantic UI supports a couple diff
 		]
 	});
 
+## Extra Content Within Logged In Dropdown
+
+Once again drawing inspiration from the bootstrap 3 accounts-ui plugin, you can now define a template, `_loginButtonsAdditionalLoggedInDropdownActions`, which will be rendered within the "logged in dropdown." Not much else to say about this - but boy oh boy, when you need this feature, you really need it!
+
+Remember that the template will be rendered as an immediate child of a `.menu` container, so you will likely want to be defining `.item`'s and what-not.
+
 ## Overview
 
 I am a relative newcomer to the Semantic UI framework, and could not find an implementation of accounts-ui using Semantic UI classes/markup, so I decided to try and put together my own. Overall I am very happy with this initial release - but I'm sure there are improvements that can be made, and I welcome pull requests or comments.
