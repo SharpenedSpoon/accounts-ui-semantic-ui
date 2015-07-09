@@ -44,7 +44,8 @@
 <!--            -->
 <template name="_loginButtonsLoggedOutDropdown">
 	<a class="ui dropdown item {{dropdownClasses}}" id="login-dropdown">
-		<i class="dropdown icon"></i>Sign in
+		<div class="text">Sign in</div>
+		<i class="dropdown icon"></i>
 		<div class="menu" id="login-dropdown-list">
 			{{#if loggingIn}}
 				{{> _loginButtonsLoggingIn}}
