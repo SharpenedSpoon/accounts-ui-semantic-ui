@@ -1,8 +1,8 @@
 Package.describe({
-	name: 'iandouglas:accounts-ui-semantic-ui',
-	version: '1.2.2',
-	summary: 'Semantic UI styled accounts-ui',
-	git: 'https://github.com/SharpenedSpoon/accounts-ui-semantic-ui',
+	name: 'nisargkolhe:accounts-ui-semantic-ui-select',
+	version: '1.2.2.1',
+	summary: 'Semantic UI styled accounts-ui with select input',
+	git: 'https://github.com/nisargkolhe/accounts-ui-semantic-ui-select',
 	documentation: 'README.md'
 });
 
