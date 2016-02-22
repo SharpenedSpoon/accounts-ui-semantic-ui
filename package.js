@@ -1,6 +1,6 @@
 Package.describe({
 	name: 'nisargkolhe:accounts-ui-semantic-ui-select',
-	version: '1.2.2.1',
+	version: '1.2.3',
 	summary: 'Semantic UI styled accounts-ui with select input',
 	git: 'https://github.com/nisargkolhe/accounts-ui-semantic-ui-select',
 	documentation: 'README.md'
