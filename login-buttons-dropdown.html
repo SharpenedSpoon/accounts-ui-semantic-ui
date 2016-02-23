@@ -192,12 +192,31 @@ https://gist.github.com/968927
 					{{/if}}
 				</div>
 			{{else}}
+				{{#if equals inputType "select"}}	
+				 <div class="field" id="login-{{fieldName}}-label-and-input">
+				    {{#if showFieldLabel}}
+						<label>{{fieldLabel}}</label>
+					{{/if}}
+				    <select class="ui dropdown select" name="login-{{fieldName}}" id="login-{{fieldName}}">
+				      {{#if empty}}
+							<option value="">{{empty}}</option>
+					{{/if}}
+					{{#each data}}
+						<option value="{{value}}">{{label}}</option>
+					{{/each}}
+				    </select>
+				  </div>
+				  {{#if useJS}}
+				  <script type="text/javascript">$('#login-{{fieldName}}-label-and-input .select').dropdown();</script>
+				  {{/if}}
+				{{else}}
 				<div class="field" id="login-{{fieldName}}-label-and-input">
 					<label id="login-{{fieldName}}-label" for="login-{{fieldName}}">
 						{{fieldLabel}}
 					</label>
 					<input id="login-{{fieldName}}" name="login-{{fieldName}}" type="{{inputType}}" />
 				</div>
+				{{/if}}
 			{{/if}}
 	{{/if}}
 </template>
